@@ -56,9 +56,12 @@ sub check_auth() {
 
 sub print_html{
     my ($value) = shift;
-    $value =~ s/</&lt;/g;
-    $value =~ s/>/&gt;/g;
-    print "$value";
+    my %map = ('&lt;' =&gt; '&amp;lt;', '&gt;' =&gt; '&amp;gt;', '&amp;' =&gt; '&amp;amp;');
+    $value =~ s/([&lt;&gt;\&amp;])/$map{$1}/ge;
+    $value =~ s!(?:^|\b)
+		    ((?:https?|ftp|mailto)://[^\s\&quot;\'/]+/[^\s():\&quot;\']+)
+		   !&lt;A HREF=\&quot;$1\&quot;&gt;$1&lt;/A&gt;!gx;
+    print $value;
 }
 
 
