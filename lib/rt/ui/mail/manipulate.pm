@@ -282,6 +282,9 @@ sub parse_headers {
 	elsif ($line =~ /^Precedence: (.*)/si) {
 	    $precedence = $1;
 	}
+	elsif ($line =~ /^X-Autoresponse-From:/si) {
+	    $precedence = 'bulk';
+	}
 	
     }
     
@@ -687,7 +690,7 @@ sub parse_actions {
       print "RT: Resolving $#resolve_nums tickets\n" if ($debug);
       foreach $ticket (@resolve_nums) {     
 	  print "Resolving $ticket\n" if ($debug);
-	  ($trans,  $message)=&rt::resolve($resolve_nums[$count], (split(/\@/, $authenticated_user))[0]);
+          ($trans,  $message)=&rt::resolve($ticket, $authenticated_user);  
 	  $response .= "RT: $message ($trans)\n";
       }
   }  
