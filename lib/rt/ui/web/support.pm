@@ -13,6 +13,10 @@ sub check_auth() {
 
     if ($rt::web_auth_mechanism =~ /external/i) {
 	print STDERR "using external auth\n" if $debug;
+        if ($rt::program =~ /nph-/) {
+ 
+                       print "HTTP/1.0 200 Ok\n";
+        }
       $current_user = $ENV{REMOTE_USER};                                        
       return (0);
     }
@@ -56,11 +60,9 @@ sub check_auth() {
 
 sub print_html{
     my ($value) = shift;
-    my %map = ('&lt;' =&gt; '&amp;lt;', '&gt;' =&gt; '&amp;gt;', '&amp;' =&gt; '&amp;amp;');
-    $value =~ s/([&lt;&gt;\&amp;])/$map{$1}/ge;
-    $value =~ s!(?:^|\b)
-		    ((?:https?|ftp|mailto)://[^\s\&quot;\'/]+/[^\s():\&quot;\']+)
-		   !&lt;A HREF=\&quot;$1\&quot;&gt;$1&lt;/A&gt;!gx;
+    my %map = ('<' => '&lt;', '>' => '&gt;', '&' => '&amp;');
+    $value =~ s/([<>\&])/$map{$1}/ge;
+    $value =~ s!(?:^|\b)((?:https?|ftp|mailto)://[^\s\"\'/]+/[^\s():\"\']+)!<A H+REF=\"$1\">$1</A>!g;   
     print $value;
 }
 
