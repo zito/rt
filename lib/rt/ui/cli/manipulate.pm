@@ -259,8 +259,7 @@ sub cli_respond_req {
     $subject=&rt::ui::cli::question_string("Subject",);
     $cc=&rt::ui::cli::question_string("Cc",);
     $bcc=&rt::ui::cli::question_string("Bcc",);      
-    print "Please enter your response to this request, terminated\nby a line containing only a period:\
-n";
+    print "Please enter your response to this request, terminated\nby a line containing only a period:\n";
     while (<STDIN>) {
         if(/^\.\n/) {
             last;
