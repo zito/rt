@@ -3470,6 +3470,13 @@ sub Transactions {
             );
 
         }
+    } else {
+        $transactions->Limit(
+            SUBCLAUSE => 'acl',
+            FIELD    => 'id',
+            VALUE    => 0,
+            ENTRYAGGREGATOR => 'AND'
+        );
     }
 
     return ($transactions);
