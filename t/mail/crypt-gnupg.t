@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use RT::Test nodata => 1, tests => 92;
+use RT::Test nodata => 1, tests => 95;
 plan skip_all => 'GnuPG required.'
     unless eval 'use GnuPG::Interface; 1';
 plan skip_all => 'gpg executable is required.'
@@ -18,7 +18,7 @@ my $homedir = RT::Test::get_abs_relocatable_dir(File::Spec->updir(),
 
 mkdir $homedir;
 
-use_ok('RT::Crypt::GnuPG');
+use_ok('RT::Crypt');
 use_ok('MIME::Entity');
 
 RT->Config->Set( 'GnuPG',
@@ -246,7 +246,10 @@ diag 'wrong signed/encrypted parts: no protocol' if $ENV{'TEST_VERBOSE'};
     $entity->head->mime_attr( 'Content-Type.protocol' => undef );
 
     my @parts = RT::Crypt->FindProtectedParts( Entity => $entity );
-    is( scalar @parts, 0, 'no protected parts' );
+    is( scalar @parts, 1, 'one protected part' );
+    is( $parts[0]->{'Type'}, 'encrypted', "have encrypted part" );
+    is( $parts[0]->{'Format'}, 'RFC3156', "RFC3156 format" );
+    is( $parts[0]->{'Top'}, $entity, "it's the same entity" );
 }
 
 diag 'wrong signed/encrypted parts: not enought parts' if $ENV{'TEST_VERBOSE'};
