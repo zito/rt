@@ -1003,7 +1003,7 @@ sub FindScatteredParts {
             push @res, {
                 Type      => 'signed',
                 Format    => 'Attachment',
-                Top       => $entity,
+                Top       => $args{'Parents'}{$data_part_in},
                 Data      => $data_part_in,
                 Signature => $sig_part,
             };
@@ -1023,7 +1023,7 @@ sub FindScatteredParts {
         push @res, {
             Type    => 'encrypted',
             Format  => 'Attachment',
-            Top     => $entity,
+            Top     => $args{'Parents'}{$part},
             Data    => $part,
         };
     }
