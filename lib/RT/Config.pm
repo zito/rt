@@ -421,8 +421,22 @@ our %META = (
         },
     },
     Plugins      => { Type => 'ARRAY' },
+    Crypt        => {
+        Type => 'HASH',
+        PostLoadCheck => sub {
+            my $self = shift;
+            my $opt = $self->Get('Crypt');
+            unless ( $opt->{'ProcessIncomming'} && @{ $opt->{'ProcessIncomming'} } ) {
+                require RT::Crypt;
+                my @enabled = grep $self->Get($_)->{'Enabled'}, RT::Crypt->Protocols;
+                $opt->{'ProcessIncomming'} = \@enabled;
+            }
+        },
+    },
+    SMIME        => { Type => 'HASH' },
     GnuPG        => { Type => 'HASH' },
-    GnuPGOptions => { Type => 'HASH',
+    GnuPGOptions => {
+        Type => 'HASH',
         PostLoadCheck => sub {
             my $self = shift;
             my $gpg = $self->Get('GnuPG');
@@ -437,13 +451,19 @@ our %META = (
                 return;
             }
 
-
             require RT::Crypt::GnuPG;
             unless (RT::Crypt::GnuPG->Probe()) {
                 $RT::Logger->debug(
                     "RT's GnuPG libraries couldn't successfully execute gpg.".
                     " PGP support has been disabled");
                 $gpg->{'Enable'} = 0;
+            }
+
+            if ( grep exists $gpg->{$_}, qw(RejectOnMissingPrivateKey RejectOnBadData) ) {
+                $RT::Logger->error(
+                    "RejectOnMissingPrivateKey and RejectOnBadData GnuPG options"
+                    ." are now generic to GnuPG and SMIME."
+                );
             }
         }
     },
