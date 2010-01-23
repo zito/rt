@@ -2008,7 +2008,7 @@ also listed.
 sub GetKeysForEncryption {
     my $self = shift;
     my $key_id = shift;
-    my %res = $self->GetKeysInfo( $key_id, 'public', @_ );
+    my %res = $self->GetKeysInfo( Key => $key_id, Type => 'public', @_ );
     return %res if $res{'exit_code'};
     return %res unless $res{'info'};
 
@@ -2030,7 +2030,7 @@ sub GetKeysForEncryption {
 sub GetKeysForSigning {
     my $self = shift;
     my $key_id = shift;
-    return $self->GetKeysInfo( $key_id, 'private', @_ );
+    return $self->GetKeysInfo( Key => $key_id, Type => 'private', @_ );
 }
 
 sub CheckRecipients {
@@ -2099,29 +2099,19 @@ sub CheckRecipients {
     return ($status, @issues);
 }
 
-sub GetPublicKeyInfo {
-    return (shift)->GetKeyInfo( shift, 'public', @_ );
-}
-
-sub GetPrivateKeyInfo {
-    return (shift)->GetKeyInfo( shift, 'private', @_ );
-}
-
-sub GetKeyInfo {
-    my $self = shift;
-    my %res = $self->GetKeysInfo(@_);
-    $res{'info'} = $res{'info'}->[0];
-    return %res;
-}
-
 sub GetKeysInfo {
     my $self = shift;
-    my $email = shift;
-    my $type = shift || 'public';
-    my $force = shift;
+    my %args = (
+        Key   => undef,
+        Type  => 'public',
+        Force => 0,
+        @_
+    );
 
+    my $email = $args{'Key'};
+    my $type = $args{'Type'};
     unless ( $email ) {
-        return (exit_code => 0) unless $force;
+        return (exit_code => 0) unless $args{'Force'};
     }
 
     my $gnupg = new GnuPG::Interface;
