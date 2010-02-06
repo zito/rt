@@ -349,7 +349,7 @@ sub SendEmail {
         $TicketObj = $TransactionObj->Object;
     }
 
-    if ( RT->Config->Get('GnuPG')->{'Enable'} ) {
+    if ( RT->Config->Get('Crypt')->{'Enable'} ) {
         my %crypt;
 
         my $attachment;
