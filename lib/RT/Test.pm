@@ -258,9 +258,6 @@ sub bootstrap_config {
     my $self = shift;
     my %args = @_;
 
-    $tmp{'config'}{'RT'} = File::Spec->catfile(
-        "$tmp{'directory'}", 'RT_SiteConfig.pm'
-    );
     my $config = $self->new_temp_file( config => RT => 'RT_SiteConfig.pm' );
     open my $config_fh, '>', $config
         or die "Couldn't open $config: $!";
@@ -269,6 +266,8 @@ sub bootstrap_config {
 Set( \$WebPort , $port);
 Set( \$WebBaseURL , "http://localhost:\$WebPort");
 Set( \$LogToSyslog , undef);
+Set( \$LogDir,     '$tmp{directory}');
+Set( \$LogToFile , "debug");
 Set( \$LogToScreen , "warning");
 Set( \$MailCommand, 'testfile');
 };
