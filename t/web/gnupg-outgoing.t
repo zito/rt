@@ -188,7 +188,7 @@ foreach my $mail ( map cleanup_headers($_), @{ $mail{'signed'} } ) {
     my $txn = $tick->Transactions->First;
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
-    is $msg->GetHeader('X-RT-Privacy'), 'PGP',
+    is $msg->GetHeader('X-RT-Privacy'), 'GnuPG',
         "RT's outgoing mail has crypto";
     is $msg->GetHeader('X-RT-Incoming-Encryption'), 'Not encrypted',
         "RT's outgoing mail looks not encrypted";
@@ -212,7 +212,7 @@ foreach my $mail ( map cleanup_headers($_), @{ $mail{'encrypted'} } ) {
     my $txn = $tick->Transactions->First;
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
-    is $msg->GetHeader('X-RT-Privacy'), 'PGP',
+    is $msg->GetHeader('X-RT-Privacy'), 'GnuPG',
         "RT's outgoing mail has crypto";
     is $msg->GetHeader('X-RT-Incoming-Encryption'), 'Success',
         "RT's outgoing mail looks encrypted";
@@ -235,7 +235,7 @@ foreach my $mail ( map cleanup_headers($_), @{ $mail{'signed_encrypted'} } ) {
     my $txn = $tick->Transactions->First;
     my ($msg, @attachments) = @{$txn->Attachments->ItemsArrayRef};
 
-    is $msg->GetHeader('X-RT-Privacy'), 'PGP',
+    is $msg->GetHeader('X-RT-Privacy'), 'GnuPG',
         "RT's outgoing mail has crypto";
     is $msg->GetHeader('X-RT-Incoming-Encryption'), 'Success',
         "RT's outgoing mail looks encrypted";
