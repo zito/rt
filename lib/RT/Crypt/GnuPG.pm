@@ -2297,31 +2297,6 @@ Returns a true value if all went well.
 
 =cut
 
-sub DrySign {
-    my $self = shift;
-    my %args = ( Signer => undef, @_ );
-    my $from = $args{'Signer'};
-
-    my $mime = MIME::Entity->build(
-        Type    => "text/plain",
-        From    => 'nobody@localhost',
-        To      => 'nobody@localhost',
-        Subject => "dry sign",
-        Data    => ['t'],
-    );
-
-    my %res = $self->SignEncrypt(
-        Sign    => 1,
-        Encrypt => 0,
-        Entity  => $mime,
-        Signer  => $from,
-    );
-
-    return $res{exit_code} == 0;
-}
-
-1;
-
 =head2 Probe
 
 This routine returns true if RT's GnuPG support is configured and working 
@@ -2398,6 +2373,8 @@ eval "require RT::Crypt::GnuPG_Local";
 if ($@ && $@ !~ qr{^Can't locate RT/Crypt/GnuPG_Local.pm}) {
     die $@;
 };
+
+1;
 
 # helper package to avoid using temp file
 package IO::Handle::CRLF;
