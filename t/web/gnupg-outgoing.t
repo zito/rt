@@ -31,7 +31,8 @@ RT->Config->Set( GnuPGOptions =>
 RT->Config->Set( 'MailPlugins' => 'Auth::MailFrom', 'Auth::GnuPG' );
 
 RT::Test->import_gnupg_key('rt-recipient@example.com');
-RT::Test->import_gnupg_key('rt-test@example.com', 'public');
+my $user_email = 'root@example.com';
+RT::Test->import_gnupg_key($user_email, 'public');
 
 my $queue = RT::Test->load_or_create_queue(
     Name              => 'Regression',
@@ -88,7 +89,7 @@ diag "check in read-only mode that queue's props influence create/update ticket 
     my ($id) = $ticket->Create(
         Subject   => 'test',
         Queue     => $queue->id,
-        Requestor => 'rt-test@example.com',
+        Requestor => $user_email,
     );
     ok $id, 'ticket created';
 
@@ -124,7 +125,7 @@ my $tid;
     ($tid) = $ticket->Create(
         Subject   => 'test',
         Queue     => $queue->id,
-        Requestor => 'rt-test@example.com',
+        Requestor => $user_email,
     );
     ok $tid, 'ticket created';
 }
@@ -146,12 +147,12 @@ foreach my $queue_set ( @variants ) {
 
 unlink $_ foreach glob( RT->Config->Get('GnuPGOptions')->{'homedir'} ."/*" );
 RT::Test->import_gnupg_key('rt-recipient@example.com', 'public');
-RT::Test->import_gnupg_key('rt-test@example.com');
+RT::Test->import_gnupg_key($user_email);
 
 $queue = RT::Test->load_or_create_queue(
     Name              => 'Regression',
-    CorrespondAddress => 'rt-test@example.com',
-    CommentAddress    => 'rt-test@example.com',
+    CorrespondAddress => $user_email,
+    CommentAddress    => $user_email,
 );
 ok $queue && $queue->id, 'changed props of the queue';
 
@@ -255,7 +256,7 @@ sub create_a_ticket {
     $m->goto_create_ticket( $queue );
     $m->form_name('TicketCreate');
     $m->field( Subject    => 'test' );
-    $m->field( Requestors => 'rt-test@example.com' );
+    $m->field( Requestors => $user_email );
     $m->field( Content    => 'Some content' );
 
     foreach ( qw(Sign Encrypt) ) {
