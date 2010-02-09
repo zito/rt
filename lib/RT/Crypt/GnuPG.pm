@@ -2375,16 +2375,3 @@ if ($@ && $@ !~ qr{^Can't locate RT/Crypt/GnuPG_Local.pm}) {
 };
 
 1;
-
-# helper package to avoid using temp file
-package IO::Handle::CRLF;
-
-use base qw(IO::Handle);
-
-sub print {
-    my ($self, @args) = (@_);
-    s/\r*\n/\x0D\x0A/g foreach @args;
-    return $self->SUPER::print( @args );
-}
-
-1;
