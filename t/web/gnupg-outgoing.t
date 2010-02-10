@@ -31,7 +31,7 @@ RT->Config->Set( GnuPGOptions =>
 RT->Config->Set( 'MailPlugins' => 'Auth::MailFrom', 'Auth::GnuPG' );
 
 RT::Test->import_gnupg_key('rt-recipient@example.com');
-my $user_email = 'root@example.com';
+my $user_email = 'rt-test@example.com';
 RT::Test->import_gnupg_key($user_email, 'public');
 
 my $queue = RT::Test->load_or_create_queue(
