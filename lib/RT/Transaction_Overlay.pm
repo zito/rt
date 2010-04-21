@@ -399,10 +399,33 @@ sub ContentObj {
     my $self = shift;
     my %args = ( Type => $PreferredContentType || 'text/plain',
                  @_ );
+    my $Attachments = $self->Attachments;
+    while ( my $Attachment = $Attachments->Next ) {
+        if ( my $content = _FindPreferredContentObj( %args, Attachment => $Attachment ) ) {
+            return $content;
+        }
+    }
+
+    # If that fails, return the first top-level textual part which has some content.
+    # We probably really want this to become "recurse, looking for the other type of
+    # displayable".  For now, this maintains backcompat
+    my $all_parts = $self->Attachments;
+    while ( my $part = $all_parts->Next ) {
+        next unless _IsDisplayableTextualContentType($part->ContentType)
+        && $part->Content;
+        return $part;
+    }
+
+    return;
+}
+
+
+sub _FindPreferredContentObj {
+    my %args = @_;
+    my $Attachment = $args{Attachment};
 
     # If we don't have any content, return undef now.
-    # Get the set of toplevel attachments to this transaction.
-    return undef unless my $Attachment = $self->Attachments->First;
+    return undef unless $Attachment;
 
     # If it's a textual part, just return the body.
     if ( _IsDisplayableTextualContentType($Attachment->ContentType) ) {
@@ -421,13 +444,17 @@ sub ContentObj {
         if ( my $first = $plain_parts->First ) {
             return $first;
         }
+    }
 
-        # If that fails, return the first textual part which has some content.
-        my $all_parts = $self->Attachments;
-        while ( my $part = $all_parts->Next ) {
-            next unless _IsDisplayableTextualContentType($part->ContentType)
-                        && $part->Content;
-            return $part;
+    # If this is a message/rfc822 mail, we need to dig into it in order to find 
+    # the actual textual content
+
+    elsif ( $Attachment->ContentType =~ '^message/rfc822' ) {
+        my $children = $Attachment->Children;
+        while ( my $child = $children->Next ) {
+            if ( my $content = _FindPreferredContentObj( %args, Attachment => $child ) ) {
+                return $content;
+            }
         }
     }
 
