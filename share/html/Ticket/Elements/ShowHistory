@@ -50,17 +50,14 @@
 #   be generalized at some point.
 </%doc>
 <%perl>
-if ($ShowDisplayModes or $ShowTitle) {
+if ( $ShowDisplayModes or $ShowTitle ) {
     my $title = $ShowTitle
                     ? loc('History')
                     : '&nbsp;';
 
-    my $titleright;
-
-    if ($ShowDisplayModes) {
-        $titleright = '';
-        
-        if ($ShowHeaders) {
+    my $titleright = '';
+    if ( $ShowDisplayModes ) {
+        if ( $ShowHeaders ) {
             $titleright .= qq{<a href="$URIFile?id=} .
                            $Ticket->id.qq{">} .
                            loc("Brief headers") .
@@ -85,6 +82,7 @@ if ($ShowDisplayModes or $ShowTitle) {
 my @attachments = @{$Attachments->ItemsArrayRef()};
 my @attachment_content = @{$AttachmentContent->ItemsArrayRef()};
 
+my $i = 1;
 while ( my $Transaction = $Transactions->Next ) {
     my $skip = 0;
     $m->callback(
@@ -95,37 +93,36 @@ while ( my $Transaction = $Transactions->Next ) {
     );
     next if $skip;
 
-    $i++;
-
     my @trans_attachments = grep { $_->TransactionId == $Transaction->Id } @attachments;
 
     my $trans_content = {};
     grep { ($_->TransactionId == $Transaction->Id ) && ($trans_content->{$_->Id} = $_)  } @attachment_content;
 
-   
     my $IsLastTransaction = 0;
     if ( $OldestFirst ) {
         $IsLastTransaction = $Transactions->IsLast;
     } else {
-        $IsLastTransaction = 1 if ( $i == 1 );
+        $IsLastTransaction = 1 if $i == 1;
     }
 
     #Args is first because we're clobbering the "Attachments" parameter 
     $m->comp( 'ShowTransaction',
-            %ARGS,
+        %ARGS,
 
-              Ticket               => $Ticket,
-              Transaction          => $Transaction,
-              ShowHeaders          => $ShowHeaders,
-              RowNum               => $i,
-              Attachments          => \@trans_attachments,
-              AttachmentContent    => $trans_content,
-              LastTransaction      => $IsLastTransaction
- );
+        Ticket            => $Ticket,
+        Transaction       => $Transaction,
+        ShowHeaders       => $ShowHeaders,
+        RowNum            => $i,
+        Attachments       => \@trans_attachments,
+        AttachmentContent => $trans_content,
+        LastTransaction   => $IsLastTransaction
+    );
 
-# manually flush the content buffer after each txn, so the user sees
-# some update
-$m->flush_buffer(); 
+    # manually flush the content buffer after each txn,
+    # so the user sees some update
+    $m->flush_buffer;
+
+    $i++;
 }
 
 </%perl>
@@ -136,7 +133,7 @@ $m->flush_buffer();
 % }
 <%INIT>
 my $Transactions = new RT::Transactions($session{'CurrentUser'});
-if ($Tickets) {
+if ( $Tickets ) {
     while (my $t = $Tickets->Next) {
         $Transactions->LimitToTicket($t->id);
     }
@@ -144,18 +141,19 @@ if ($Tickets) {
     $Transactions = $Ticket->Transactions;
 }
 
-
 my $OldestFirst = RT->Config->Get( 'OldestTransactionsFirst', $session{'CurrentUser'} );
 my $SortOrder = $OldestFirst? 'ASC': 'DESC';
-$Transactions->OrderByCols( { FIELD => 'Created',
-                              ORDER => $SortOrder },
-                            { FIELD => 'id',
-                              ORDER => $SortOrder },
-                          );
+$Transactions->OrderByCols(
+    { FIELD => 'Created', ORDER => $SortOrder },
+    { FIELD => 'id', ORDER => $SortOrder },
+);
 
-my $i;
-$Attachments ||=  $m->comp('/Ticket/Elements/FindAttachments', Ticket => $Ticket, Tickets => $Tickets || undef);
-$AttachmentContent ||= $m->comp('/Ticket/Elements/LoadTextAttachments', Ticket => $Ticket);
+$Attachments ||= $m->comp('/Ticket/Elements/FindAttachments',
+    Ticket => $Ticket, Tickets => $Tickets,
+);
+$AttachmentContent ||= $m->comp('/Ticket/Elements/LoadTextAttachments',
+    Ticket => $Ticket
+);
 
 </%INIT>
 <%ARGS>
