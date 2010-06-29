@@ -79,9 +79,6 @@ if ( $ShowDisplayModes or $ShowTitle ) {
 
 <div id="ticket-history">
 <%perl>
-my @attachments = @{$Attachments->ItemsArrayRef()};
-my @attachment_content = @{$AttachmentContent->ItemsArrayRef()};
-
 my $i = 1;
 while ( my $Transaction = $Transactions->Next ) {
     my $skip = 0;
@@ -92,11 +89,6 @@ while ( my $Transaction = $Transactions->Next ) {
         CallbackName  => 'SkipTransaction',
     );
     next if $skip;
-
-    my @trans_attachments = grep { $_->TransactionId == $Transaction->Id } @attachments;
-
-    my $trans_content = {};
-    grep { ($_->TransactionId == $Transaction->Id ) && ($trans_content->{$_->Id} = $_)  } @attachment_content;
 
     my $IsLastTransaction = 0;
     if ( $OldestFirst ) {
@@ -113,8 +105,8 @@ while ( my $Transaction = $Transactions->Next ) {
         Transaction       => $Transaction,
         ShowHeaders       => $ShowHeaders,
         RowNum            => $i,
-        Attachments       => \@trans_attachments,
-        AttachmentContent => $trans_content,
+        Attachments       => $attachments{ $Transaction->id } || [],
+        AttachmentContent => \%attachment_content,
         LastTransaction   => $IsLastTransaction
     );
 
@@ -154,6 +146,12 @@ $Attachments ||= $m->comp('/Ticket/Elements/FindAttachments',
 $AttachmentContent ||= $m->comp('/Ticket/Elements/LoadTextAttachments',
     Ticket => $Ticket
 );
+
+my %attachments;
+push @{ $attachments{ $_->TransactionId } ||= [] }, $_
+    foreach @{ $Attachments->ItemsArrayRef };
+my %attachment_content = map { $_->id => $_ }
+    @{ $AttachmentContent->ItemsArrayRef };
 
 </%INIT>
 <%ARGS>
