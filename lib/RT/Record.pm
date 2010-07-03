@@ -121,21 +121,28 @@ sub Delete {
     } 
 }
 
+=head2 RecordType
+
+Returns a string which is this record's type. It's not localized and by
+default last part (everything after last ::) of class name is returned.
+
+=cut
+
+sub RecordType {
+    my $res = ref($_[0]) || $_[0];
+    $res =~ s/.*:://;
+    return $res;
+}
+
 =head2 ObjectTypeStr
 
-Returns a string which is this object's type.  The type is the class,
-without the "RT::" prefix.
-
+DEPRECATED. Stays here for backwards. Returns localized L</RecordType>.
 
 =cut
 
 sub ObjectTypeStr {
     my $self = shift;
-    if (ref($self) =~ /^.*::(\w+)$/) {
-	return $self->loc($1);
-    } else {
-	return $self->loc(ref($self));
-    }
+    return $self->loc( $self->RecordType( @_ ) );
 }
 
 =head2 Attributes
