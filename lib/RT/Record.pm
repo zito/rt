@@ -140,6 +140,13 @@ DEPRECATED. Stays here for backwards. Returns localized L</RecordType>.
 
 =cut
 
+# we deprecate because of:
+# * ObjectType is used in several classes with ObjectId to store
+#   records of different types, for example transactions use those
+#   and it's unclear what this method should return 'Transaction'
+#   or type of referenced record
+# * returning localized thing is not good idea
+
 sub ObjectTypeStr {
     my $self = shift;
     return $self->loc( $self->RecordType( @_ ) );
