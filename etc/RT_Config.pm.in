@@ -1297,6 +1297,16 @@ option can be overridden by users in their preferences.
 
 Set($OldestTransactionsFirst, '1');
 
+=item C<$DeferTransactionLoading>
+
+When set, defers loading ticket history until the user clicks a link.
+This should end up serving pages to users quicker, since generating
+all the HTML for transaction history can be slow for long tickets.
+
+=cut
+
+#Set($DeferTransactionLoading, '1');
+
 =item C<$ShowTransactionImages>
 
 By default, RT shows images attached to incoming (and outgoing) ticket updates
@@ -1538,17 +1548,6 @@ Use this to set the default units for time entry to hours instead of minutes.
 =cut
 
 Set($DefaultTimeUnitsToHours, 0);
-
-=item C<$HideCustomFieldValidator>
-
-Use this to hide the regular expression used to validate custom field values.
-This applies only to the custom field admin interface. The regular expression's
-first comment will be used as the label for that validator. For example, the
-validator C<(?#Digits)^[\d.]+$> will display as just C<Digits>.
-
-=cut
-
-Set($HideCustomFieldValidator, 0);
 
 =back
 
