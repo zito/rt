@@ -3596,9 +3596,9 @@ sub Attachments {
     );
     my $ticket_alias = $res->Join(
         ALIAS1 => $txn_alias,
-        FIELD1 => 'id',
+        FIELD1 => 'ObjectId',
         TABLE2 => 'Tickets',
-        FIELD2 => 'EffectiveId',
+        FIELD2 => 'id',
     );
     $res->Limit(
         ALIAS => $ticket_alias,
