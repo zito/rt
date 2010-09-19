@@ -143,9 +143,7 @@ $Transactions->OrderByCols(
 $Attachments ||= $m->comp('/Ticket/Elements/FindAttachments',
     Ticket => $Ticket, Tickets => $Tickets,
 );
-$AttachmentContent ||= $m->comp('/Ticket/Elements/LoadTextAttachments',
-    Ticket => $Ticket
-);
+$AttachmentContent ||= $Ticket->TextAttachments;
 
 my %attachments;
 push @{ $attachments{ $_->TransactionId } ||= [] }, $_
