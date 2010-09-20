@@ -105,7 +105,7 @@ while ( my $Transaction = $Transactions->Next ) {
         Transaction       => $Transaction,
         ShowHeaders       => $ShowHeaders,
         RowNum            => $i,
-        Attachments       => $attachments{ $Transaction->id } || [],
+        Attachments       => $attachments{ $Transaction->id } || {},
         AttachmentContent => \%attachment_content,
         LastTransaction   => $IsLastTransaction
     );
@@ -146,8 +146,10 @@ $Attachments ||= $m->comp('/Ticket/Elements/FindAttachments',
 $AttachmentContent ||= $Ticket->TextAttachments;
 
 my %attachments;
-push @{ $attachments{ $_->TransactionId } ||= [] }, $_
-    foreach @{ $Attachments->ItemsArrayRef };
+foreach ( @{ $Attachments->ItemsArrayRef } ) {
+    my $tmp = $attachments{ $_->TransactionId } ||= {};
+    push @{ $tmp->{ $_->Parent || 0 } ||= [] }, $_;
+}
 my %attachment_content = map { $_->id => $_ }
     @{ $AttachmentContent->ItemsArrayRef };
 
