@@ -45,6 +45,7 @@
 %# those contributions and any derivatives thereof.
 %# 
 %# END BPS TAGGED BLOCK }}}
+<div class="history ticket">
 <%doc>
 #   This is (ab)used in Admin/(Users|Groups)/History.html and should probably
 #   be generalized at some point.
@@ -73,11 +74,10 @@ if ( $ShowDisplayModes or $ShowTitle ) {
         }
     }
 </%perl>
-<div class="history">
 <& /Widgets/TitleBoxStart, title => $title, titleright_raw => $titleright &>
 % }
 
-<div id="ticket-history">
+<div id="ticket-<% $Ticket->id %>-history" class="history-container">
 <%perl>
 my $i = 1;
 while ( my $Transaction = $Transactions->Next ) {
@@ -121,8 +121,8 @@ while ( my $Transaction = $Transactions->Next ) {
 </div>
 % if ($ShowDisplayModes or $ShowTitle) {
 <& /Widgets/TitleBoxEnd &>
-</div>
 % }
+</div>
 <%INIT>
 my $Transactions = new RT::Transactions($session{'CurrentUser'});
 if ( $Tickets ) {
