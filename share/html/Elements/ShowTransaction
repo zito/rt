@@ -76,7 +76,9 @@ if ( $Transaction->CustomFieldValues->Count ) {
     $m->comp('/Elements/ShowCustomFields', Object => $Transaction );
 }
 $m->comp(
-    '/Ticket/Elements/ShowTransactionAttachments', %ARGS, Parent => 0
+    '/Ticket/Elements/ShowTransactionAttachments',
+    %ARGS,
+    Parent => 0
 ) if $ShowBody;
 </%PERL>
   </div>
