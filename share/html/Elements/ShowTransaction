@@ -230,7 +230,7 @@ $m->callback(
     Classes     => \@classes,
     Actions     => \@actions,
     Created     => \$date,
-    TimeTakes   => \$time,
+    TimeTaken   => \$time,
     Description => \$desc,
 );
 
