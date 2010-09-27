@@ -131,7 +131,7 @@ my $time = '';
 $time = loc('[quant,_1,min,min]', $Transaction->TimeTaken)
     if $Transaction->TimeTaken;
 
-unless ( $Attachments ) { 
+if ( $ShowBody && !$Attachments ) { 
     $ARGS{'Attachments'} = $Attachments = {};
 
     my $attachments = $Transaction->Attachments;
