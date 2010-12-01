@@ -564,7 +564,6 @@ sub _DowngradeFromHTML {
     $orig_entity->head->mime_attr( "Content-Type.charset" => 'utf-8' );
     $orig_entity->make_multipart('alternative', Force => 1);
 
-    require HTML::FormatText::WithLinks::AndTables;
     require Encode;
     $new_entity->bodyhandle(MIME::Body::InCore->new(
         # need to decode_utf8, see the doc of MIMEObj method
