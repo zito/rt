@@ -1858,6 +1858,7 @@ sub ConvertHTMLToText {
             before_link     => '',
             after_link      => ' (%l)',
             footnote        => '',
+            skip_linked_urls => 1,
         }
     );
 }
