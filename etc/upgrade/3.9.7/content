@@ -33,7 +33,7 @@ you may reply to this message.</p>
        Content     => 'RT-Attach-Message: yes
 Content-Type: text/html
 
-<b>{$Transaction->CreatedAsString}: {$Transaction->CreatorObj->Name} updated ticket <a href="{RT->Config->Get("WebURL")}Ticket/Display.html?id={$Ticket->id}">{$Ticket->id}</a>.</b>
+<b>{$Transaction->CreatedAsString}: Request <a href="{RT->Config->Get("WebURL")}Ticket/Display.html?id={$Ticket->id}">{$Ticket->id}</a> was acted upon by {$Transaction->CreatorObj->Name}.</b>
 <br>
 <table border="0">
 <tr><td align="right"><b>Transaction:</b></td><td>{$Transaction->Description}</td></tr>
