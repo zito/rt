@@ -812,10 +812,13 @@ sub switch_templates_ok {
     my $type = shift;
 
     my ($exit, $output) = $self->switch_templates_to($type);
-
-    Test::More::ok(not ($exit >> 8), "Switched templates to $type cleanly");
-    diag("**** etc/upgrade/switch-templates-to exited with $num:\n$output")
-        if $exit >> 8;
+    
+    if ($exit >> 8) {
+        Test::More::fail("Switched templates to $type cleanly");
+        diag("**** etc/upgrade/switch-templates-to exited with ".($exit >> 8).":\n$output");
+    } else {
+        Test::More::pass("Switched templates to $type cleanly");
+    }
 
     return ($exit, $output);
 }
