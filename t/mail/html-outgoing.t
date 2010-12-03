@@ -35,7 +35,7 @@ for my $user_name (qw(enduser tech)) {
 my $t = RT::Ticket->new(RT->SystemUser);
 my ($tid, $ttrans, $tmsg);
 
-# Autoreply and AdminCc (Transaction)
+diag "Autoreply and AdminCc (Transaction)";
 mail_ok {
     ($tid, $ttrans, $tmsg) = 
         $t->Create(Subject => "The internet is broken",
@@ -44,23 +44,53 @@ mail_ok {
 } { from    => qr/The default queue/,
     to      => 'enduser@example.com',
     subject => qr/\Q[example.com #1] AutoReply: The internet is broken\E/,
-    body    => qr{
-        Content-Type:\stext/plain.+?
-        trouble\sticket\sregarding\sThe\sinternet\sis\sbroken.+?
-        Content-Type:\stext/html.+?
-        trouble\sticket\sregarding\s<b>The\sinternet\sis\sbroken</b>
-    }xs,
+    body    => parts_regex(
+        'trouble ticket regarding The internet is broken',
+        'trouble ticket regarding <b>The internet is broken</b>'
+    ),
     'Content-Type' => qr{multipart},
 },{ from    => qr/RT System/,
     bcc     => 'root@localhost',
     subject => qr/\Q[example.com #1] The internet is broken\E/,
-    body    => qr{
-        Content-Type:\stext/plain.+?
-        Request\s1\s\(http://localhost:\d+/Ticket/Display\.html\?id=1\)\s+was\sacted\supon\sby\sRT_System.+?
-        Content-Type:\stext/html.+?
-        Request\s<a\shref="http://localhost:\d+/Ticket/Display\.html\?id=1">1</a>\swas\sacted\supon\sby\sRT_System\.</b>
-    }xs,
+    body    => parts_regex(
+        'Request 1 \(http://localhost:\d+/Ticket/Display\.html\?id=1\)\s+?was acted upon by RT_System',
+        'Request <a href="http://localhost:\d+/Ticket/Display\.html\?id=1">1</a> was acted upon by RT_System\.</b>'
+    ),
     'Content-Type' => qr{multipart},
 };
 
+
+diag "Autoreply and AdminCc (Transaction)";
+mail_ok {
+    ($ok, $tmsg) = $t->Correspond(
+        Content => 'This is a test of correspondence using HTML templates.',
+    );
+} { from    => qr/RT System/,
+    bcc     => 'root@localhost',
+    subject => qr/\Q[example.com #1] The internet is broken\E/,
+    body    => parts_regex(
+        'Ticket URL: http://localhost:\d+/Ticket/Display\.html\?id=1.+?'.
+        'This is a test of correspondence using HTML templates\.',
+        'Ticket URL: <a href="(http://localhost:\d+/Ticket/Display\.html\?id=1)">\1</a>.+?'.
+        '<pre>This is a test of correspondence using HTML templates\.</pre>'
+    ),
+    'Content-Type' => qr{multipart},
+},{ from    => qr/RT System/,
+    to      => 'enduser@example.com',
+    subject => qr/\Q[example.com #1] The internet is broken\E/,
+    body    => parts_regex(
+        'This is a test of correspondence using HTML templates\.',
+        '<pre>This is a test of correspondence using HTML templates\.</pre>'
+    ),
+    'Content-Type' => qr{multipart},
+};
+
+sub parts_regex {
+    my ($text, $html) = @_;
+
+    my $pattern = 'Content-Type: text/plain.+?' . $text . '.+?' .
+                  'Content-Type: text/html.+?'  . $html;
+
+    return qr/$pattern/s;
+}
 
