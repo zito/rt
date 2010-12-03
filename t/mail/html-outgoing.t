@@ -59,28 +59,30 @@ mail_ok {
     'Content-Type' => qr{multipart},
 };
 
-
 diag "Admin Correspondence and Correspondence";
 mail_ok {
     ($ok, $tmsg) = $t->Correspond(
-        Content => 'This is a test of correspondence using HTML templates.',
+        MIMEObj => HTML::Mason::Commands::MakeMIMEEntity(
+            Body => '<p>This is a test of <b>HTML</b> correspondence.</p>',
+            Type => 'text/html',
+        ),
     );
 } { from    => qr/RT System/,
     bcc     => 'root@localhost',
     subject => qr/\Q[example.com #1] The internet is broken\E/,
     body    => parts_regex(
         'Ticket URL: http://localhost:\d+/Ticket/Display\.html\?id=1.+?'.
-        'This is a test of correspondence using HTML templates\.',
+        'This is a test of HTML correspondence\.',
         'Ticket URL: <a href="(http://localhost:\d+/Ticket/Display\.html\?id=1)">\1</a>.+?'.
-        '<pre>This is a test of correspondence using HTML templates\.</pre>'
+        '<p>This is a test of <b>HTML</b> correspondence\.</p>'
     ),
     'Content-Type' => qr{multipart},
 },{ from    => qr/RT System/,
     to      => 'enduser@example.com',
     subject => qr/\Q[example.com #1] The internet is broken\E/,
     body    => parts_regex(
-        'This is a test of correspondence using HTML templates\.',
-        '<pre>This is a test of correspondence using HTML templates\.</pre>'
+        'This is a test of HTML correspondence\.',
+        '<p>This is a test of <b>HTML</b> correspondence\.</p>'
     ),
     'Content-Type' => qr{multipart},
 };
@@ -89,7 +91,10 @@ mail_ok {
 diag "Admin Comment in HTML";
 mail_ok {
     ($ok, $tmsg) = $t->Comment(
-        Content => 'Comment test, please!',
+        MIMEObj => HTML::Mason::Commands::MakeMIMEEntity(
+            Body => '<p>Comment test, <em>please!</em></p>',
+            Type => 'text/html',
+        ),
     );
 } { from    => qr/RT System/,
     bcc     => 'root@localhost',
@@ -101,7 +106,7 @@ mail_ok {
 
         '<p>This is a comment about <a href="http://localhost:\d+/Ticket/Display\.html\?id=1">ticket 1</a>\. '.
         'It is not sent to the Requestor\(s\):</p>.+?'.
-        '<pre>Comment test, please!</pre>',
+        '<p>Comment test, <em>please!</em></p>',
     ),
     'Content-Type' => qr{multipart},
 };
