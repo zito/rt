@@ -1859,6 +1859,11 @@ sub ConvertHTMLToText {
             after_link      => ' (%l)',
             footnote        => '',
             skip_linked_urls => 1,
+            # XXX TODO: These should be enabled once the patch (rt.cpan.org
+            # #63571) to HTML::FormatText::WithLinks is accepted and released
+            #with_emphasis   => 1,
+            #bold_marker     => '"',
+            #italic_marker   => '"',
         }
     );
 }
