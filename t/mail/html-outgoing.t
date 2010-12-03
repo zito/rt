@@ -4,7 +4,7 @@ use RT::Test tests => undef;
 BEGIN {
     plan skip_all => 'Email::Abstract and Test::Email required.'
         unless eval { require Email::Abstract; require Test::Email; 1 };
-    plan 'no_plan';
+    plan tests => 19;
 }
 
 RT::Test->switch_templates_ok('html');
@@ -60,7 +60,7 @@ mail_ok {
 };
 
 
-diag "Autoreply and AdminCc (Transaction)";
+diag "Admin Correspondence and Correspondence";
 mail_ok {
     ($ok, $tmsg) = $t->Correspond(
         Content => 'This is a test of correspondence using HTML templates.',
@@ -84,6 +84,70 @@ mail_ok {
     ),
     'Content-Type' => qr{multipart},
 };
+
+
+diag "Admin Comment in HTML";
+mail_ok {
+    ($ok, $tmsg) = $t->Comment(
+        Content => 'Comment test, please!',
+    );
+} { from    => qr/RT System/,
+    bcc     => 'root@localhost',
+    subject => qr/\Q[example.com #1] [Comment] The internet is broken\E/,
+    body    => parts_regex(
+        'This is a comment about ticket 1 \(http://localhost:\d+/Ticket/Display\.html\?id=1\)\..+?'.
+        'It is not sent to the Requestor\(s\):.+?'.
+        'Comment test, please!',
+
+        '<p>This is a comment about <a href="http://localhost:\d+/Ticket/Display\.html\?id=1">ticket 1</a>\. '.
+        'It is not sent to the Requestor\(s\):</p>.+?'.
+        '<pre>Comment test, please!</pre>',
+    ),
+    'Content-Type' => qr{multipart},
+};
+
+
+diag "Resolved in HTML templates";
+mail_ok {
+    ($ok, $tmsg) = $t->SetStatus('resolved');
+} { from    => qr/RT System/,
+    to      => 'enduser@example.com',
+    subject => qr/\Q[example.com #1] Resolved: The internet is broken\E/,
+    body    => parts_regex(
+        'According to our records, your request has been resolved\.',
+        '<p>According to our records, your request has been resolved\.',
+    ),
+    'Content-Type' => qr{multipart},
+};
+
+
+diag "Status changes in HTML";
+my $scrip = RT::Scrip->new(RT->SystemUser);
+my ($sval, $smsg) =$scrip->Create(
+    ScripCondition => 'On Status Change',
+    ScripAction => 'Notify Requestors',
+    Template => 'Status Change in HTML',
+    Queue => $q->Id,
+    Description => 'Tell requestors about status changes'
+);
+ok ($sval, $smsg);
+ok ($scrip->Id, "Created the scrip");
+ok ($scrip->TemplateObj->Id, "Created the scrip template");
+ok ($scrip->ConditionObj->Id, "Created the scrip condition");
+ok ($scrip->ActionObj->Id, "Created the scrip action");
+
+mail_ok {
+    ($ok, $tmsg) = $t->SetStatus('stalled');
+} { from    => qr/RT System/,
+    to      => 'enduser@example.com',
+    subject => qr/\Q[example.com #1] Status Changed to: stalled\E/,
+    body    => parts_regex(
+        'http://localhost:\d+/Ticket/Display\.html\?id=1.+?',
+        '<a href="(http://localhost:\d+/Ticket/Display\.html\?id=1)">\1</a>'
+    ),
+    'Content-Type' => qr{multipart},
+};
+
 
 sub parts_regex {
     my ($text, $html) = @_;
