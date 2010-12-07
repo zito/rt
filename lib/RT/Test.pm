@@ -176,12 +176,10 @@ sub import {
         $level++;
     }
 
-    # By default we test plain text templates for legacy's sake
-    my ($exit, $output) = $class->switch_templates_to('text');
-
-    if (my $num = $exit >> 8) {
-        warn "**** Trouble switching templates to plain text (exited $num):\n";
-        warn $output, "\n";
+    # By default we test HTML templates, but text templates are
+    # available on request
+    if ( $args{'text_templates'} ) {
+        $class->switch_templates_ok('text');
     }
 
     Test::More->export_to_level($level);
