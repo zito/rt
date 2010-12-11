@@ -350,6 +350,29 @@ sub JoinRoleGroups {
     return $groups;
 }
 
+sub JoinGroupMembers {
+    my $self = shift;
+    my %args = (New => 1, GroupsAlias => undef, Left => 1, @_);
+
+    return $self->{'_sql_aliases'}{'group_members'}{ $args{'GroupsAlias'} }
+        if $self->{'_sql_aliases'}{'group_members'}{ $args{'GroupsAlias'} }
+            && !$args{'New'};
+
+    my $alias = $self->Join(
+        $args{'Left'} ? (TYPE            => 'LEFT') : (),
+        ALIAS1          => $args{'GroupsAlias'},
+        FIELD1          => 'id',
+        TABLE2          => 'CachedGroupMembers',
+        FIELD2          => 'GroupId',
+        ENTRYAGGREGATOR => 'AND',
+    );
+
+    $self->{'_sql_aliases'}{'group_members'}{ $args{'GroupsAlias'} } = $alias
+        unless $args{'New'};
+
+    return $alias;
+}
+
 RT::Base->_ImportOverlays();
 
 1;
