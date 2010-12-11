@@ -1016,6 +1016,10 @@ sub _RoleGroupsJoin {
         $args{'Class'} = 'RT::Queue';
         $args{'Field'} = 'Queue';
     }
+    elsif ( $args{'Class'} eq 'Ticket' ) {
+        $args{'Class'} = 'RT::Ticket';
+        $args{'Field'} = 'id';
+    }
     return $self->JoinRoleGroups( %args );
 }
 
