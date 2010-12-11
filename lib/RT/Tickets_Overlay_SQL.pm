@@ -86,7 +86,7 @@ sub _SQLLimit {
          (!$args{'ALIAS'} || $args{'ALIAS'} eq 'main' ) ) {
         $self->{'looking_at_type'} = 1;
     }
-    $args{'SUBCLAUSE'} ||= 'ticketsql';
+    $args{'SUBCLAUSE'} ||= 'ticketsql' unless $args{'LEFTJOIN'};
 
   # All SQL stuff goes into one SB subclause so we can deal with all
   # the aggregation
