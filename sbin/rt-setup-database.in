@@ -350,6 +350,14 @@ sub action_upgrade {
     print "\nIT'S VERY IMPORTANT TO BACK UP BEFORE THIS STEP\n\n";
     _yesno() or exit(-2) unless $args{'force'};
 
+    RT->System->AddUpgradeHistory(RT => {
+        type      => 'full upgrade',
+        action    => 'upgrade',
+        from      => $upgrading_from,
+        to        => $upgrading_to,
+        versions  => [@versions],
+    });
+
     foreach my $v ( @versions ) {
         print "Processing $v\n";
         my %tmp = (%args, datadir => "$base_dir/$v", datafile => undef);
