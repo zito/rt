@@ -266,7 +266,15 @@ sub action_insert {
     $file = $RT::EtcPath . "/initialdata" if $init && !$file;
     $file ||= $args{'datadir'}."/content";
 
-    return $RT::Handle->InsertData( $file, $root_password );
+    ($status, $msg) = $RT::Handle->InsertData( $file, $root_password );
+    return ($status, $msg) unless $status;
+
+    RT->System->AddUpgradeHistory(RT => {
+        action   => 'insert',
+        filename => $file,
+    });
+
+    return ($status, $msg);
 }
 
 sub action_upgrade {
