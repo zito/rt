@@ -371,6 +371,15 @@ sub action_upgrade {
     my $previous = $upgrading_from;
     foreach my $v ( @versions ) {
         print "Processing $v\n";
+
+        RT->System->AddUpgradeHistory(RT => {
+            action => 'upgrade',
+            type   => 'individual upgrade',
+            stage  => 'before',
+            from   => $previous,
+            to     => $v,
+        });
+
         my %tmp = (%args, datadir => "$base_dir/$v", datafile => undef);
         if ( -e "$base_dir/$v/schema.$db_type" ) {
             action_schema( %tmp );
@@ -392,6 +401,16 @@ sub action_upgrade {
 
         $previous = $v;
     }
+
+    RT->System->AddUpgradeHistory(RT => {
+        type      => 'full upgrade',
+        action    => 'upgrade',
+        stage     => 'after',
+        from      => $upgrading_from,
+        to        => $upgrading_to,
+        versions  => [@versions],
+    });
+
     return 1;
 }
 
