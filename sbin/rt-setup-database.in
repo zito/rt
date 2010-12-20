@@ -358,6 +358,7 @@ sub action_upgrade {
         versions  => [@versions],
     });
 
+    my $previous = $upgrading_from;
     foreach my $v ( @versions ) {
         print "Processing $v\n";
         my %tmp = (%args, datadir => "$base_dir/$v", datafile => undef);
@@ -370,6 +371,15 @@ sub action_upgrade {
         if ( -e "$base_dir/$v/content" ) {
             action_insert( %tmp );
         }
+
+        RT->System->AddUpgradeHistory(RT => {
+            action => 'upgrade',
+            type   => 'individual upgrade',
+            from   => $previous,
+            to     => $v,
+        });
+
+        $previous = $v;
     }
     return 1;
 }
