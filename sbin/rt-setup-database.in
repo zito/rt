@@ -269,9 +269,17 @@ sub action_insert {
     ($status, $msg) = $RT::Handle->InsertData( $file, $root_password );
     return ($status, $msg) unless $status;
 
+    my $content;
+    open my $handle, '<', $file or warn "Unable to open $file: $!";
+    if ($handle) {
+        local $/; # slurp
+        $content = <$handle>;
+    }
+
     RT->System->AddUpgradeHistory(RT => {
         action   => 'insert',
         filename => $file,
+        content  => $content,
         stage    => 'after',
     });
 
