@@ -392,7 +392,6 @@ my $build_admin_menu = sub {
         $settings->child( about_me => title => loc('About me'), path     => '/User/Prefs.html', );
         $settings->child( search_options => title => loc('Search options'), path => '/Prefs/SearchOptions.html', );
         $settings->child( myrt => title => loc('RT at a glance'), path => '/Prefs/MyRT.html', );
-        $settings->child( quicksearch => title => 'Quick search' => title => loc('Quick search'), path => '/Prefs/Quicksearch.html');
 
         my $search_menu = $settings->child( 'saved-searches' => title => 'Saved Searches' );
         my $searches = [ $m->comp( "/Search/Elements/SearchesForObject",
