@@ -45,41 +45,41 @@
 %# those contributions and any derivatives thereof.
 %#
 %# END BPS TAGGED BLOCK }}}
-<%perl>
-    foreach my $lifecycle ( map $lifecycle{$_}, sort keys %lifecycle ) {
-    my @cur_statuses = grep $lifecycle->IsValid($_), @statuses;
-    next unless @cur_statuses;
-</%perl>
-
 <table border="0" cellspacing="0" cellpadding="1" width="100%" class="queue-summary">
+
+<%perl>
+my $i = 0;
+
+foreach my $group ( map $groups{$_}, sort keys %groups ) {
+    my @statuses = @{ $group->{'statuses'} };
+</%perl>
 
 <tr>
     <th class="collection-as-table"><&|/l&>Queue</&></th>
-% for my $status ( @cur_statuses ) {
+% for my $status ( @statuses ) {
     <th class="collection-as-table"><% loc($status) %></th>
+% }
+% for ( 1 .. ($max - @statuses) ) {
+    <th class="collection-as-table">&nbsp;</th>
 % }
 </tr>
 
 <%PERL>
-my $i = 0;
-for my $queue (@queues) {
-    next if lc($queue->{Lifecycle} || '') ne lc $lifecycle->Name;
-
+for my $queue (@{ $group->{'queues'} }) {
     $i++;
-    my $name = $queue->{Name};
-    $name =~ s/'/\\'/g;
-    my $queue_cond = "Queue = '$name' AND ";
-    my $all_q = $queue_cond . '(' . join( " OR ", map "Status = '$_'", @cur_statuses ) . ')';
+    my $name = RT::SQL->Quote( $queue->Name );
+    my $queue_cond = "Queue = $name AND ";
+    my $all_q = $queue_cond . '(' . join( " OR ", map "Status = $_", map RT::SQL->Quote($_), @statuses ) . ')';
 </%PERL>
 <tr class="<% $i%2 ? 'oddline' : 'evenline'%>" >
 
 <td>
-    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $all_q |u,n %>" title="<% $queue->{Description} %>"><% $queue->{Name} %></a>
+    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $all_q |u,n %>" title="<% $queue->Description %>"><% $queue->Name %></a>
 </td>
 
-%   for my $status (@cur_statuses) {
+%   for my $status (@statuses) {
 <td align="right">
-    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $queue_cond ."Status = '$status'" |u,n %>"><% $data->{$queue->{id}}->{$status } || '-' %></a>
+    <a href="<% RT->Config->Get('WebPath') %>/Search/Results.html?Query=<% $queue_cond ."Status = ". RT::SQL->Quote($status) |u,n %>"><% $data->{ $queue->id }->{ $status } || '0' %></a>
 </td>
 %   }
 </tr>
@@ -87,59 +87,31 @@ for my $queue (@queues) {
 </table>
 % }
 <%INIT>
+return unless @queues && @statuses;
 
-my $Queues = RT::Queues->new( $session{'CurrentUser'} );
-$Queues->UnLimit();
-$m->callback( CallbackName => 'SQLFilter', Queues => $Queues );
+my $max = 0;
 
-my @queues = grep $queue_filter->($_), @{ $Queues->ItemsArrayRef };
-$m->callback( CallbackName => 'Filter', Queues => \@queues );
-
-@queues = map {
-    {  id          => $_->Id,
-       Name        => $_->Name,
-       Description => $_->Description || '',
-       Lifecycle   => $_->Lifecycle->Name,
+my %groups;
+foreach my $queue ( @queues ) {
+    my $cycle = $queue->Lifecycle;
+    my $cycle_name = $cycle->Name;
+    if ( $groups{ $cycle_name } ) {
+        push @{ $groups{ $cycle_name }{'queues'} }, $queue;
+        next;
     }
-} grep $_, @queues;
 
-my %lifecycle;
-
-for my $queue (@queues) {
-    my $cycle = RT::Lifecycle->Load( $queue->{'Lifecycle'} );
-    $lifecycle{ lc $cycle->Name } = $cycle;
+    $groups{ $cycle_name } = {
+        cycle => $cycle,
+        statuses => [ grep $cycle->IsValid( $_), @statuses ],
+        queues => [$queue],
+    };
+    $max = @{ $groups{ $cycle_name }{'statuses'} }
+        if $max < @{ $groups{ $cycle_name }{'statuses'} };
 }
 
-unless (@statuses) {
-    my %seen;
-    foreach my $set ( 'initial', 'active' ) {
-        foreach my $lifecycle ( map $lifecycle{$_}, sort keys %lifecycle ) {
-            push @statuses, grep !$seen{ lc $_ }++, $lifecycle->Valid($set);
-        }
-    }
-}
-
-my $data     = {};
-my $statuses = {};
-
-use RT::Report::Tickets;
-my $report = RT::Report::Tickets->new( RT->SystemUser );
-my $query =
-    "(".
-    join(" OR ", map {s{(['\\])}{\\$1}g; "Status = '$_'"} @statuses) #'
-    .") AND (".
-    join(' OR ', map "Queue = ".$_->{id}, @queues)
-    .")";
-$query = 'id < 0' unless @queues;
-$report->SetupGroupings( Query => $query, GroupBy => [qw(Status Queue)] );
-
-while ( my $entry = $report->Next ) {
-    $data->{ $entry->__Value("Queue") }->{ $entry->__Value("Status") }
-        = $entry->__Value('id');
-    $statuses->{ $entry->__Value("Status") } = 1;
-}
 </%INIT>
 <%ARGS>
-$queue_filter => undef
-@statuses => ()
+@queues          => ()
+@statuses        => ()
+$data            => {}
 </%ARGS>
