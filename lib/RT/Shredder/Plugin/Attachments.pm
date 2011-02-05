@@ -132,7 +132,7 @@ sub Run
     }
     return (0, "Internal error: '". $sth->err ."'. Please send bug report.") if $sth->err;
 
-    map { $_ = "RT::Attachment-$_" } @objs;
+    $_ = "RT::Attachment-$_" foreach @objs;
 
     return (1, @objs);
 }
