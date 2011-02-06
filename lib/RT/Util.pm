@@ -52,7 +52,7 @@ use warnings;
 
 
 use base 'Exporter';
-our @EXPORT = qw/safe_run_child/;
+our @EXPORT_OK = qw/safe_run_child eval_require/;
 
 sub safe_run_child (&) {
     my $our_pid = $$;
@@ -96,6 +96,29 @@ sub safe_run_child (&) {
     return $want? (@res) : $res[0];
 }
 
+sub eval_require ($;$) {
+    my $class = shift;
+    my $fatal = shift;
+
+    local $@;
+    return 1 if eval "require $class; 1";
+
+    if ( $fatal ) {
+        return $fatal->() if ref $fatal eq 'CODE';
+
+        require Carp;
+        return Carp::croak($@);
+    }
+
+    (my $filename = $class) =~ s{::}{/}g;
+    if ( rindex( $@, "Can't locate $filename", 0 ) != 0 ) { # doesn't start with
+        require Carp;
+        return Carp::carp($@);
+    }
+    return 0;
+}
+
+use RT::Base;
 RT::Base->_ImportOverlays();
 
 1;
