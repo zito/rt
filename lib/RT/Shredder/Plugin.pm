@@ -51,6 +51,7 @@ package RT::Shredder::Plugin;
 use strict;
 use warnings FATAL => 'all';
 use File::Spec ();
+use RT::Util qw(eval_require);
 
 =head1 NAME
 
@@ -134,7 +135,7 @@ sub List
     delete $res{'Base'};
     foreach my $name( keys %res ) {
         my $class = join '::', qw(RT Shredder Plugin), $name;
-        unless( eval "require $class" ) {
+        unless( eval_require $class ) {
             delete $res{ $name };
             next;
         }
@@ -165,9 +166,8 @@ sub LoadByName
     my $self = shift;
     my $name = shift or return (0, "Name not specified");
 
-    local $@;
     my $plugin = "RT::Shredder::Plugin::$name";
-    eval "require $plugin" or return( 0, $@ );
+    eval_require $plugin or return( 0, "Failed to load $plugin" );
     return( 0, "Plugin '$plugin' has no method new") unless $plugin->can('new');
 
     my $obj = eval { $plugin->new( @_ ) };

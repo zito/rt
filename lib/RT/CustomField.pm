@@ -61,6 +61,7 @@ sub Table {'CustomFields'}
 use RT::CustomFieldValues;
 use RT::ObjectCustomFields;
 use RT::ObjectCustomFieldValues;
+use RT::Util qw(eval_require);
 
 our %FieldTypes = (
     Select => {
@@ -518,7 +519,7 @@ sub Values {
 
     my $class = $self->ValuesClass;
     if ( $class ne 'RT::CustomFieldValues') {
-        eval "require $class" or die "$@";
+        eval_require $class, 'fatal';
     }
     my $cf_values = $class->new( $self->CurrentUser );
     # if the user has no rights, return an empty object

@@ -51,6 +51,7 @@ use warnings;
 use strict;
 
 use RT::CurrentUser;
+use RT::Util qw(eval_require);
 
 =head1 NAME
 
@@ -84,8 +85,7 @@ sub Class {
     my $class = RT->Config->Get('WebSessionClass')
              || $self->Backends->{RT->Config->Get('DatabaseType')}
              || 'Apache::Session::File';
-    eval "require $class";
-    die $@ if $@;
+    eval_require $class => 'fatal';
     return $class;
 }
 

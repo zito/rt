@@ -461,8 +461,9 @@ use Encode::Guess to try to figure it out the string's encoding.
 
 =cut
 
-use constant HAS_ENCODE_GUESS => do { local $@; eval { require Encode::Guess; 1 } };
-use constant HAS_ENCODE_DETECT => do { local $@; eval { require Encode::Detect::Detector; 1 } };
+use RT::Util qw(eval_require);
+use constant HAS_ENCODE_GUESS => eval_require 'Encode::Guess';
+use constant HAS_ENCODE_DETECT => eval_require 'Encode::Detect::Detector';
 
 sub _GuessCharset {
     my $fallback = _CanonicalizeCharset('iso-8859-1');

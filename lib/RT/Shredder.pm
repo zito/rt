@@ -51,6 +51,7 @@ package RT::Shredder;
 use strict;
 use warnings;
 
+use RT::Util qw(eval_require);
 
 
 =head1 NAME
@@ -349,8 +350,7 @@ sub CastObjectsToRecords
         $targets = $$targets if ref $targets;
         my ($class, $id) = split /-/, $targets;
         $class = 'RT::'. $class unless $class =~ /^RTx?::/i;
-        eval "require $class";
-        die "Couldn't load '$class' module" if $@;
+        eval_require $class, 'fatal';
         my $obj = $class->new( RT->SystemUser );
         die "Couldn't construct new '$class' object" unless $obj;
         $obj->Load( $id );

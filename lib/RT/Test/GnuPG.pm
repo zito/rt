@@ -4,6 +4,7 @@ use Test::More;
 use base qw(RT::Test);
 use File::Temp qw(tempdir);
 use RT::Crypt::GnuPG;
+use RT::Util qw(eval_require);
 
 our @EXPORT =
   qw(create_a_ticket update_ticket cleanup_headers set_queue_crypt_options 
@@ -17,7 +18,7 @@ sub import {
     my $t     = $class->builder;
 
     $t->plan( skip_all => 'GnuPG required.' )
-      unless eval { require GnuPG::Interface; 1 };
+      unless eval_require 'GnuPG::Interface';
     $t->plan( skip_all => 'gpg executable is required.' )
       unless RT::Test->find_executable('gpg');
 

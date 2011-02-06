@@ -53,6 +53,7 @@ use warnings;
 
 use File::Spec ();
 use Symbol::Global::Name;
+use RT::Util qw(eval_require);
 
 =head1 NAME
 
@@ -479,10 +480,9 @@ our %META = (
             my $self  = shift;
             my $value = shift;
             return if $value;
-            return if $INC{'GraphViz.pm'};
-            local $@;
-            return if eval {require GraphViz; 1};
-            $RT::Logger->debug("You've enabled GraphViz, but we couldn't load the module: $@");
+            return if eval_require 'GraphViz' => sub {
+                $RT::Logger->debug("You've enabled GraphViz, but we couldn't load the module: $@");
+            };
             $self->Set( DisableGraphViz => 1 );
         },
     },
@@ -492,10 +492,9 @@ our %META = (
             my $self  = shift;
             my $value = shift;
             return if $value;
-            return if $INC{'GD.pm'};
-            local $@;
-            return if eval {require GD; 1};
-            $RT::Logger->debug("You've enabled GD, but we couldn't load the module: $@");
+            return if eval_require 'GD' => sub {
+                $RT::Logger->debug("You've enabled GD, but we couldn't load the module: $@");
+            };
             $self->Set( DisableGD => 1 );
         },
     },

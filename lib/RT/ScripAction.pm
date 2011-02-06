@@ -74,6 +74,8 @@ use warnings;
 
 use base 'RT::Record';
 
+use RT::Util qw(eval_require);
+
 sub Table {'ScripActions'}
 
 
@@ -170,8 +172,8 @@ sub LoadAction  {
     my $module = $1;
     my $type = "RT::Action::". $module;
  
-    eval "require $type" || die "Require of $type failed.\n$@\n";
-    
+    eval_require $type => sub { die "Require of $type action module failed.\n$@\n" };
+
     $self->{'Action'}  = $type->new ( Argument => $self->Argument,
                                       CurrentUser => $self->CurrentUser,
                                       ScripActionObj => $self, 

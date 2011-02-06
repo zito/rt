@@ -65,6 +65,9 @@ use warnings;
 package RT::Squish::JS;
 use base 'RT::Squish';
 
+use RT::Util qw(eval_require);
+use constant HAS_JS_MINIFIER => eval_require 'JavaScript::Minifier';
+
 =head2 Squish
 
 not only concatenate files, but also minify them
@@ -104,14 +107,8 @@ sub Filter {
         }
     }
 
-    unless ($minified) {
-        eval { require JavaScript::Minifier };
-        if ($@) {
-            $RT::Logger->debug("can't load JavaScript::Minifier: $@");
-        }
-        else {
-            $content = JavaScript::Minifier::minify( input => $content );
-        }
+    if ( !$minified && HAS_JS_MINIFIER ) {
+        $content = JavaScript::Minifier::minify( input => $content );
     }
     return $content;
 }
