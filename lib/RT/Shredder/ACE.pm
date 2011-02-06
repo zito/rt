@@ -46,8 +46,8 @@
 #
 # END BPS TAGGED BLOCK }}}
 
-use RT::ACE qw();
 package RT::ACE;
+use RT::ACE qw();
 
 use strict;
 use warnings;

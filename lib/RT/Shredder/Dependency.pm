@@ -49,6 +49,8 @@
 package RT::Shredder::Dependency;
 
 use strict;
+use warnings;
+
 use RT::Shredder::Constants;
 use RT::Shredder::Exceptions;
 
