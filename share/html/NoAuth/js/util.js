@@ -345,3 +345,12 @@ function addprincipal_onchange(ev, ui) {
 function escapeCssSelector(str) {
     return str.replace(/([^A-Za-z0-9_-])/g,'\\$1');
 }
+
+function checkFileInput ( element ) {
+    var val = jQuery(element).val();
+    if ( val && val.match( /"/ ) ) {
+        alert("filename contains double quote(\"), which is not supported");
+        jQuery(element).val('');
+    }
+}
+

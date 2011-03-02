@@ -69,6 +69,15 @@ $onload => undef
 % if ( RT->Config->Get('MessageBoxRichText',  $session{'CurrentUser'})) {
     jQuery().ready(function ()  { ReplaceAllTextareas('<%$m->request_args->{'CKeditorEncoded'} || 0 %>') });
 % }
+
+
+jQuery( function() {
+    jQuery("input[type=file]").change( function() {
+            checkFileInput(this); 
+        } );
+    }
+);
+
 --></script>
 
 <%INIT>
