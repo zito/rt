@@ -22,7 +22,8 @@ like ($t_link->url, qr/$id/, 'link to the ticket we created');
 $m->content_lacks ('customsearch@localhost', 'requestor not displayed ');
 $m->get ( $url.'Prefs/MyRT.html' );
 my $cus_hp = $m->find_link( text => "My Tickets" );
-my $cus_qs = $m->find_link( text => "Quick search" );
+$m->get ( $url );
+my $cus_qs = $m->find_link( text => "Edit", url_regex => qr/QueueSummary/ );
 $m->get ($cus_hp);
 $m->content_contains('highest priority tickets');
 
