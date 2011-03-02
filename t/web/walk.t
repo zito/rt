@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use RT::Test tests => 92;
+use RT::Test tests => 91;
 
 my ( $baseurl, $m ) = RT::Test->started_ok;
 
@@ -166,7 +166,7 @@ diag 'walk into /Prefs' if $ENV{TEST_VERBOSE};
 {
     for my $id (
         'settings',    'settings-about_me', 'settings-search_options', 'settings-myrt',
-        'settings-quicksearch', 'settings-saved-searches-search-0', 'settings-saved-searches-search-1',       'settings-saved-searches-search-2',
+        'settings-saved-searches-search-0', 'settings-saved-searches-search-1',       'settings-saved-searches-search-2',
         'logout'
       )
     {
