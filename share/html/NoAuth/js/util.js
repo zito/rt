@@ -354,3 +354,10 @@ function checkFileInput ( element ) {
     }
 }
 
+jQuery( function() {
+    jQuery("input[type=file]").change( function() {
+            checkFileInput(this);
+        } );
+    }
+);
+

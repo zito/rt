@@ -71,13 +71,6 @@ $onload => undef
 % }
 
 
-jQuery( function() {
-    jQuery("input[type=file]").change( function() {
-            checkFileInput(this); 
-        } );
-    }
-);
-
 --></script>
 
 <%INIT>
