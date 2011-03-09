@@ -60,7 +60,7 @@ $r->headers_out->{'Cache-control'} = 'no-cache';
 <title><%$title%></title>
 <meta name="viewport" content="width=device-width height=device-height user-scalable=yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes" /> <!-- hide browser chrome in webclipped RT -->
-<link rel="apple-touch-icon" href="<%RT->Config->Get('WebPath')%>/m/images/apple-touch-icon.png" /> <!-- webclipped RT app icon -->
+<link rel="apple-touch-icon" href="<%RT->Config->Get('WebPath')%>/NoAuth/images/apple-touch-icon.png" /> <!-- webclipped RT app icon -->
 </head>
 <body>
 % if ($show_home_button) {
