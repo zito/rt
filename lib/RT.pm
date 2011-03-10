@@ -785,6 +785,31 @@ L<DBIx::SearchBuilder>
 
 =cut
 
+# These work around us not declaring RT::VERSION here (but instead
+# using lib/RT/Generated.pm.  This allowed us to no longer have an
+# RT.pm.in but means we need version shenanigans
+
+# if in a perl module, you say requires('RT','3.8.9') ExtUtils::MM_Unix's
+# parse_version looks for a VERSION line outside of POD, so if you want to
+# declare something that won't actually be parsed at runtime, you're supposed
+# to if (0) or unless (1) it
+if (0) {
+    use RT::Generated; our $VERSION = $RT::VERSION;
+}
+
+# Unfortunately, auto_install doesn't use the above version hack, it wants to
+# require RT; RT->VERSION but that doesn't seem to pick up the LoadGeneratedData
+# import into RT::VERSION.  Also, in perl 5.12, version parsing is stricter and
+# versions like 4.0.0rc6 or 4.0.0-22-g12345a die during the compare, so we strip
+# off cruft to make it happier.  I wonder what this breaks.
+sub VERSION {
+    my $version = $RT::VERSION;
+    $version =~ s/rc|pre|alpha/_/;
+    $version =~ s/-\d+-g[a-f0-9]+$//;
+    return $version;
+}
+
+
 require RT::Base;
 RT::Base->_ImportOverlays();
 
