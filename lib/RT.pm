@@ -797,11 +797,14 @@ if (0) {
     use RT::Generated; our $VERSION = $RT::VERSION;
 }
 
-# Unfortunately, auto_install doesn't use the above version hack, it wants to
-# require RT; RT->VERSION but that doesn't seem to pick up the LoadGeneratedData
-# import into RT::VERSION.  Also, in perl 5.12, version parsing is stricter and
-# versions like 4.0.0rc6 or 4.0.0-22-g12345a die during the compare, so we strip
-# off cruft to make it happier.  I wonder what this breaks.
+# Unfortunately, auto_install doesn't use the above version hack, it
+# wants to eval { require RT; RT->VERSION }.  UNIVERSAL::VERSION demands
+# that $RT::VERSION be parsable by the is_lax version.pm method.  Our
+# version numbers often aren't parsable (since we grab them from git
+# describe --tags).  During a normal stable release of RT,
+# UNIVERSAL::VERSION will work and parse 4.0.0 or 4.0.1, but we provide
+# a redefinition of UNVERSAL::VERSION to clean up our version numbers
+# and make them compliant with the perl toolchain.
 sub VERSION {
     my $version = $RT::VERSION;
     $version =~ s/rc|pre|alpha/_/;
