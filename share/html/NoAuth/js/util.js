@@ -349,14 +349,35 @@ function escapeCssSelector(str) {
 function checkFileInput ( element ) {
     var val = jQuery(element).val();
     if ( val && val.match( /"/ ) ) {
-        alert("filename contains double quote(\"), which is not supported");
-        jQuery(element).val('');
+        return false;
+    }
+    else {
+        return true;
     }
 }
 
 jQuery( function() {
     jQuery("input[type=file]").change( function() {
-            checkFileInput(this);
+            var invalid_div = jQuery(this).next().hasClass('invalid') ?
+jQuery(this).next() : false;
+
+            if ( checkFileInput(this) ) {
+                if ( invalid_div ) {
+                    invalid_div.hide();
+                }
+            }
+            else {
+                if ( invalid_div  ) {
+                    invalid_div.show();
+                }
+                else {
+                    jQuery(this).after(
+                        '<div class="invalid">filename can not contain double quotes</div>'
+                    );
+                    jQuery(this).val('');
+
+                }
+            }
         } );
     }
 );
