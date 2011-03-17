@@ -150,9 +150,9 @@ sub LimitToMembersOfGroup {
 
 =head2 LimitToGroupsWithMember PRINCIPAL_ID
 
-Takes a Principal Id as its only argument. 
-Limits the current search to groups which contain PRINCIPAL_ID as a member  or submember.
-This function gets used by GroupMember->Create to populate subgroups
+Takes a Principal Id as its only argument. Limits the current search to groups
+which contain PRINCIPAL_ID as a member, possibly recursively through subgroups.
+This function gets used by L<RT::GroupMember/Create> to populate subgroups.
 
 =cut
 
