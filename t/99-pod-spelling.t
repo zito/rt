@@ -26,6 +26,7 @@ Zakirov
 
 # ENGLISH
 one's
+multi
 
 # PROGRAMMING JARGON
 API
@@ -93,6 +94,7 @@ usernames
 denormalizes
 canonicalizes
 reinitializes
+codepath
 
 # RT JARGON
 ACEs

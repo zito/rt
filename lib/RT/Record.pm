@@ -97,8 +97,8 @@ sub _PrimaryKey { 'id' }
 
 =head2 Id
 
-Override L<DBIx::SearchBuilder/Id> to avoid a few lookups RT doesn't do
-on a very common codepath
+Override L<DBIx::SearchBuilder/Id> to break encapsulation for a very hot
+codepath.
 
 C<id> is an alias to C<Id> and is the preferred way to call this method.
 
@@ -261,11 +261,11 @@ sub _Handle { return $RT::Handle }
 =head2  Create PARAMHASH
 
 Takes a PARAMHASH of Column -> Value pairs.
-If any Column has a Validate$PARAMNAME subroutine defined and the 
+If any Column has a C<Validate$PARAMNAME> subroutine defined and the 
 value provided doesn't pass validation, this routine returns
 an error.
 
-If this object's table has any of the following atetributes defined as
+If this object's table has any of the following attributes defined as
 'Auto', this routine will automatically fill in their values.
 
 =cut
@@ -605,7 +605,7 @@ sub ValidateName {
 
 =head2 SQLType attribute
 
-return the SQL type for the attribute 'attribute' as stored in _ClassAccessible
+Returns the SQL type for the attribute 'attribute' as stored in L</_ClassAccessible>.
 
 =cut
 
@@ -613,9 +613,7 @@ sub SQLType {
     my $self = shift;
     my $field = shift;
 
-    return ($self->_Accessible($field, 'type'));
-
-
+    return $self->_Accessible($field, 'type');
 }
 
 sub __Value {
@@ -1094,11 +1092,10 @@ sub UnresolvedDependencies {
 
 =head2 AllDependedOnBy
 
-Returns an array of RT::Ticket objects which (directly or indirectly)
-depends on this ticket; takes an optional 'Type' argument in the param
-hash, which will limit returned tickets to that type, as well as cause
-tickets with that type to serve as 'leaf' nodes that stops the recursive
-dependency search.
+Returns an array of RT::Ticket objects which (directly or indirectly) depends
+on this ticket; takes an optional 'Type' argument in the paramhash, which will
+limit returned tickets to that type, as well as cause tickets with that type to
+serve as 'leaf' nodes that stops the recursive dependency search.
 
 =cut
 
@@ -1111,10 +1108,9 @@ sub AllDependedOnBy {
 =head2 AllDependsOn
 
 Returns an array of RT::Ticket objects which this ticket (directly or
-indirectly) depends on; takes an optional 'Type' argument in the param
-hash, which will limit returned tickets to that type, as well as cause
-tickets with that type to serve as 'leaf' nodes that stops the
-recursive dependency search.
+indirectly) depends on; takes an optional 'Type' argument in the paramhash,
+which will limit returned tickets to that type, as well as cause tickets with
+that type to serve as 'leaf' nodes that stops the recursive dependency search.
 
 =cut
 
