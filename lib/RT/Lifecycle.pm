@@ -160,7 +160,7 @@ sub List {
 
 =head2 Name
 
-Returns name of the laoded lifecycle.
+Returns name of the loaded lifecycle.
 
 =cut
 
@@ -376,7 +376,7 @@ Takes status and returns list of statuses it can be changed to.
 Is status is empty or undefined then returns list of statuses for
 a new ticket.
 
-If argument is ommitted then returns a hash with all possible
+If the argument is omitted, then this returns a hash with all possible
 transitions in the following format:
 
     status_x => [ next_status, next_status, ... ],
@@ -432,7 +432,7 @@ sub CheckRight {
 
 =head3 RegisterRights
 
-Registers all defined rights in the system, so they can be addigned
+Registers all defined rights in the system, so they can be assigned
 to users. No need to call it, as it's called when module is loaded.
 
 =cut
