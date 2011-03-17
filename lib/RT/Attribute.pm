@@ -433,7 +433,8 @@ sub CurrentUserHasRight {
 
 =head1 TODO
 
-We should be deserializing the content on load and then enver again, rather than at every access
+We should be deserializing the content on load and then never again, rather
+than at every access.
 
 =cut
 

@@ -82,6 +82,7 @@ Intercal
 subclause
 longtext
 ENTRYAGGREGATOR
+deserializing
 
 # RT JARGON
 ACEs
@@ -106,3 +107,6 @@ lifecycle
 lifecycles
 mailgate
 HotList
+attribute's
+subvalue
+subvalues
