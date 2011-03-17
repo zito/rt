@@ -269,12 +269,12 @@ sub LoadUserDefinedGroup {
 
 =head2 LoadACLEquivalenceGroup PRINCIPAL
 
-Loads a user's acl equivalence group. Takes a principal object or its ID.
-ACL equivalnce groups are used to simplify the acl system. Each user
+Loads a user's ACL equivalence group. Takes a principal object or its ID.
+ACL equivalence groups are used to simplify the ACL system. Each user
 has one group that only he is a member of. Rights granted to the user
 are actually granted to that group. This greatly simplifies ACL checks.
 While this results in a somewhat more complex setup when creating users
-and granting ACLs, it _greatly_ simplifies acl checks.
+and granting ACLs, it _greatly_ simplifies ACL checks.
 
 =cut
 
@@ -317,7 +317,7 @@ sub LoadSystemInternalGroup {
 
 Loads a ticket group from the database. 
 
-Takes a param hash with 2 parameters:
+Takes a paramhash with two parameters:
 
     Ticket is the TicketId we're curious about
     Type is the type of Group we're trying to load: 
@@ -342,7 +342,7 @@ sub LoadTicketRoleGroup {
 
 Loads a Queue group from the database. 
 
-Takes a param hash with 2 parameters:
+Takes a paramhash with two parameters:
 
     Queue is the QueueId we're curious about
     Type is the type of Group we're trying to load: 
@@ -367,7 +367,7 @@ sub LoadQueueRoleGroup {
 
 Loads a System group from the database. 
 
-Takes a single param: Type
+Takes a single parameter: Type
 
     Type is the type of Group we're trying to load: 
         Requestor, Cc, AdminCc, Owner
@@ -535,9 +535,9 @@ sub _ValidateUserDefinedName {
 
 A helper subroutine which creates a group containing only 
 an individual user. This gets used by the ACL system to check rights.
-Yes, it denormalizes the data, but that's ok, as we totally win on performance.
+Yes, it denormalizes the data, but that's okay, as we totally win on performance.
 
-Returns a tuple of (Id, Message).  If id is 0, the create failed
+Returns a tuple of (Id, Message). If ID is 0, the create failed.
 
 =cut
 
@@ -861,7 +861,7 @@ sub MemberEmailAddressesAsString {
 
 AddMember adds a principal to this group.  It takes a single principal id.
 Returns a two value array. the first value is true on successful 
-addition or 0 on failure.  The second value is a textual status msg.
+addition or 0 on failure.  The second value is a textual status message.
 
 =cut
 
@@ -1033,10 +1033,10 @@ sub HasMemberRecursively {
 =head2 DeleteMember PRINCIPAL_ID
 
 Takes the principal id of a current user or group.
-If the current user has apropriate rights,
-removes that GroupMember from this group.
+If the current user has appropriate rights,
+removes that L<RT::GroupMember> from this group.
 Returns a two value array. the first value is true on successful 
-addition or 0 on failure.  The second value is a textual status msg.
+addition or 0 on failure.  The second value is a textual status message.
 
 =cut
 
