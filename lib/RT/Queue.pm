@@ -281,8 +281,8 @@ sub SetLifecycle {
 
 =head2 ValidateLifecycle NAME
 
-Takes a lifecycle name. Returns true if it's an ok name and such
-lifecycle is configured. Returns undef otherwise.
+Returns true if there is an L<RT::Lifecycle> with the given NAME. Returns
+C<undef> otherwise.
 
 =cut
 
@@ -529,8 +529,8 @@ sub Load {
 
 =head2 ValidateName NAME
 
-Takes a queue name. Returns true if it's an ok name for
-a new queue. Returns undef if there's already a queue by that name.
+Takes a queue name. Returns true if it's an acceptable name for
+a new queue. Returns C<undef> if there's already a queue by that name.
 
 =cut
 
@@ -831,9 +831,9 @@ AddWatcher takes a parameter hash. The keys are as follows:
 
 Type        One of Requestor, Cc, AdminCc
 
-PrinicpalId The RT::Principal id of the user or group that's being added as a watcher
+PrincipalId The RT::Principal id of the user or group that's being added as a watcher
 Email       The email address of the new watcher. If a user with this 
-            email address can't be found, a new nonprivileged user will be created.
+            email address can't be found, a new unprivileged user will be created.
 
 If the watcher you\'re trying to set has an RT account, set the Owner parameter to their User Id. Otherwise, set the Email parameter to their Email address.
 
@@ -960,8 +960,10 @@ Type  (one of Requestor,Cc,AdminCc)
 and one of
 
 PrincipalId (an RT::Principal Id of the watcher you want to remove)
-    OR
-Email (the email address of an existing wathcer)
+
+OR
+
+Email (the email address of an existing watcher)
 
 
 =cut
@@ -1116,7 +1118,7 @@ sub AdminCc {
 
 =head2 IsWatcher { Type => TYPE, PrincipalId => PRINCIPAL_ID }
 
-Takes a param hash with the attributes Type and PrincipalId
+Takes a paramhash with the attributes Type and PrincipalId
 
 Type is one of Requestor, Cc, AdminCc and Owner
 
@@ -1242,7 +1244,7 @@ sub CurrentUserHasRight {
 
 =head2 HasRight
 
-Takes a param hash with the fields 'Right' and 'Principal'.
+Takes a paramhash with the fields 'Right' and 'Principal'.
 Principal defaults to the current user.
 Returns true if the principal has that right for this queue.
 Returns undef otherwise.

@@ -111,6 +111,7 @@ portlet
 portlets
 RT's
 Requestor
+requestor
 Requestors
 crontool
 lifecycle
