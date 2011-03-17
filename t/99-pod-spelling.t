@@ -100,8 +100,8 @@ CustomField
 Gecos
 LastUpdated
 LastUpdatedBy
-Portlet
-Portlets
+portlet
+portlets
 RT's
 Requestor
 Requestors

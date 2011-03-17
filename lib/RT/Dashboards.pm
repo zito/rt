@@ -78,9 +78,10 @@ sub RecordClass {
 
 =head2 LimitToPrivacy
 
-Takes one argument: a privacy string, of the format "<class>-<id>", as produced
-by RT::Dashboard::Privacy(). The Dashboards object will load the dashboards
-belonging to that user or group. Repeated calls to the same object should DTRT.
+Takes one argument: a privacy string, of the format C<$class-$id>, as produced
+by C<< RT::Dashboard->Privacy >>. The Dashboards object will load the
+dashboards belonging to that user or group. Repeated calls to the same object
+should do the right thing.
 
 =cut
 
