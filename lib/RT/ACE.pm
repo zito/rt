@@ -314,8 +314,6 @@ Delete this object. This method should ONLY ever be called from RT::User or RT::
 If this is being called from within a transaction, specify a true value for the parameter InsideTransaction.
 Really, DBIx::SearchBuilder should use and/or fake subtransactions
 
-This routine will also recurse and delete any delegations of this right
-
 =cut
 
 sub Delete {
@@ -325,8 +323,6 @@ sub Delete {
         return ( 0, $self->loc('Right not loaded.') );
     }
 
-    # A user can delete an ACE if the current user has the right to modify it and it's not a delegated ACE
-    # or if it's a delegated ACE and it was delegated by the current user
     unless ($self->CurrentUser->HasRight(Right => 'ModifyACL', Object => $self->Object)) {
         return ( 0, $self->loc('Permission Denied') );
     }

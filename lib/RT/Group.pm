@@ -628,7 +628,6 @@ sub Delete {
     # Remove this group from anything it's a member of.
     # Remove all cached members of this group
     # Remove any rights granted to this group
-    # remove any rights delegated by way of this group
 
     return ( $self->SUPER::Delete(@_) );
 }

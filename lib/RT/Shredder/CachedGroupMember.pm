@@ -75,9 +75,6 @@ sub __DependsOn
     $objs->Limit( FIELD => 'id', OPERATOR => '!=', VALUE => $self->Id );
     push( @$list, $objs );
 
-# principal lost group membership and lost some rights which he could delegate to
-# some body
-
 # XXX: Here is problem cause HasMemberRecursively would return true allways
 # cause we didn't delete anything yet. :(
     # if pricipal is not member anymore(could be via other groups) then proceed
