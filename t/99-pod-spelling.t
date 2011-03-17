@@ -77,6 +77,8 @@ unix
 username
 workflow
 hostname
+Mozilla's
+Intercal
 
 # RT JARGON
 ACEs

@@ -176,9 +176,9 @@ sub LoadByValues {
 
 
 
-=head2 Create <PARAMS>
+=head2 Create C<PARAMS>
 
-PARAMS is a parameter hash with the following elements:
+C<PARAMS> is a parameter hash with the following elements:
 
    PrincipalId => The id of an RT::Principal object
    PrincipalType => "User" "Group" or any Role type
@@ -310,9 +310,10 @@ sub Create {
 
 =head2 Delete { InsideTransaction => undef}
 
-Delete this object. This method should ONLY ever be called from RT::User or RT::Group (or from itself)
-If this is being called from within a transaction, specify a true value for the parameter InsideTransaction.
-Really, DBIx::SearchBuilder should use and/or fake subtransactions
+Delete this object. This method should ONLY ever be called from L<RT::User> or
+L<RT::Group> (or from itself). If this is being called from within a
+transaction, specify a true value for the parameter C<InsideTransaction>. Really,
+L<DBIx::SearchBuilder> should use and/or fake sub-transactions.
 
 =cut
 
@@ -357,12 +358,12 @@ sub _Delete {
 
 =head2 _BootstrapCreate
 
-Grant a right with no error checking and no ACL. this is _only_ for 
+Grants a right with no error checking and no ACL. This is _only_ for 
 installation. If you use this routine without the author's explicit 
 written approval, he will hunt you down and make you spend eternity
-translating mozilla's code into FORTRAN or intercal.
+translating Mozilla's code into FORTRAN or Intercal.
 
-If you think you need this routine, you've mistaken. 
+If you think you need this routine, you're mistaken. 
 
 =cut
 
@@ -514,7 +515,7 @@ sub _Value {
 
 Takes a principal id and a principal type.
 
-If the principal is a user, resolves it to the proper acl equivalence group.
+If the principal is a user, resolves it to the proper ACL equivalence group.
 Returns a tuple of  (RT::Principal, PrincipalType)  for the principal we really want to work with
 
 =cut
