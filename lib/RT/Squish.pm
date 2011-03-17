@@ -90,8 +90,9 @@ sub new {
 
 =head2 Squish
 
-virtual method which does nothing,
-you need to implement this method in subclasses.
+Virtual method which does nothing,
+
+You must implement this method in subclasses.
 
 =cut
 
@@ -102,19 +103,19 @@ sub Squish {
 
 =head2 Content
 
-squished content
+The squished content
 
 =head2 Key
 
-md5 of the squished content
+MD5 digest of the squished content
 
 =head2 ModifiedTime
 
-created time of squished content, i.e. seconds since 00:00:00 UTC, January 1, 1970
+Creation time of the squished content, expressed as seconds since epoch
 
 =head2 ModifiedTimeString
 
-created time of squished content, with HTTP::Date format
+Creation time of the squished content, expressed as L<HTTP::Date> format
 
 =cut
 
