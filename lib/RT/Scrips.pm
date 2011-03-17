@@ -305,7 +305,7 @@ sub _SetupSourceObjects {
 
 =head2 _FindScrips
 
-Find only the apropriate scrips for whatever we're doing now.  Order them 
+Find only the appropriate scrips for whatever we're doing now.  Order them 
 by their description.  (Most common use case is to prepend a number to the
 description, forcing the scrips to display and run in ascending alphanumerical 
 order.)
