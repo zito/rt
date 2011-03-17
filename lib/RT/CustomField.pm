@@ -440,7 +440,7 @@ If the Queue parameter is '0', look for global ticket custom fields.
 
 If no queue parameter is specified, look for any and all custom fields with this name.
 
-BUG/TODO, this won't let you specify that you only want user or group CFs.
+BUG/TODO, this won't let you specify that you only want user or group custom fields.
 
 =cut
 
@@ -612,7 +612,7 @@ sub ValidateQueue {
 
 =head2 Types 
 
-Retuns an array of the types of CustomField that are supported
+Returns a list of the types of CustomField that are supported.
 
 =cut
 
@@ -623,8 +623,8 @@ sub Types {
 
 =head2 IsSelectionType 
 
-Retuns a boolean value indicating whether the C<Values> method makes sense
-to this Custom Field.
+Returns a boolean value indicating whether the C<Values> method applies to this
+Custom Field.
 
 =cut
 
@@ -905,8 +905,10 @@ sub _Value {
 =head2 SetDisabled
 
 Takes a boolean.
-1 will cause this custom field to no longer be avaialble for objects.
-0 will re-enable this field.
+
+True values will cause this custom field to no longer be available for objects.
+
+False will re-enable this field.
 
 =cut
 
@@ -1343,7 +1345,7 @@ sub RemoveFromObject {
 =head2 AddValueForObject HASH
 
 Adds a custom field value for a record object of some kind. 
-Takes a param hash of 
+Takes a paramhash of:
 
 Required:
 
@@ -1495,7 +1497,7 @@ sub FriendlyPattern {
 
 =head2 DeleteValueForObject HASH
 
-Deletes a custom field value for a ticket. Takes a param hash of Object and Content
+Deletes a custom field value for a ticket. Takes a paramhash of Object and Content.
 
 Returns a tuple of (STATUS, MESSAGE). If the call succeeded, the STATUS is true. otherwise it's false
 
@@ -1640,7 +1642,7 @@ sub LinkValueTo {
 With one argument, returns the _URLTemplate named C<NAME>, but only if
 the current user has the right to see this custom field.
 
-With two arguments, attemptes to set the relevant template value.
+With two arguments, this attempts to set the relevant template value.
 
 =cut
 
