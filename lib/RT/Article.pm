@@ -352,8 +352,8 @@ sub Children {
 
 =head2 AddLink
 
-Takes a paramhash of Type and one of Base or Target. Adds that link to this tick
-et.
+Takes a paramhash of C<Type> and one of C<Base> or C<Target>. Adds that link to
+this ticket.
 
 =cut
 
@@ -577,9 +577,9 @@ sub _Set {
 
 }
 
-=head2 _Value PARAM
+=head2 _Value C<PARAM>
 
-Return "PARAM" for this object. if the current user doesn't have rights, returns undef
+Return C<PARAM> for this object. If the current user doesn't have rights, returns C<undef>.
 
 =cut
 
@@ -615,9 +615,9 @@ Takes the name of a form field from "Include Article"
 and the value submitted by the browser and attempts to load an Article.
 
 This handles Articles included by searching, by the Name and via
-the hotlist.
+the HotList.
 
-If you optionaly pass an id as the Queue argument, this will check that
+If you optionally pass an id as the Queue argument, this will verify that
 the Article's Class is applied to that Queue.
 
 =cut
