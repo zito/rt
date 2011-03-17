@@ -258,16 +258,6 @@ sub DESTROY {
     $self->{'TemplateObj'} = undef;
 }
 
-=head2 TODO
-
-Between this, RT::Scrip and RT::Action::*, we need to be able to get rid of a 
-class. This just reeks of too much complexity -- jesse
-
-=cut
-
-
-
-
 =head2 id
 
 Returns the current value of id.
