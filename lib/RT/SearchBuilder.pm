@@ -212,9 +212,9 @@ sub LimitCustomField {
 
 =head2 Limit PARAMHASH
 
-This Limit sub calls SUPER::Limit, but defaults "CASESENSITIVE" to 1, thus
+This Limit sub calls C<SUPER::Limit>, but defaults "CASESENSITIVE" to 1, thus
 making sure that by default lots of things don't do extra work trying to 
-match lower(colname) agaist lc($val);
+match C<lower(colname)> against C<lc($val)>;
 
 =cut
 
@@ -286,8 +286,9 @@ sub _DoCount {
 =head2 ColumnMapClassName
 
 ColumnMap needs a Collection name to load the correct list display.
-Depluralization is hard, so provide an easy way to correct the naive
-algorithm that this code uses.
+
+Depluralization is hard, so you can easily correct the naive
+algorithm that this code uses in your subclass.
 
 =cut
 

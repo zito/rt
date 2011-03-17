@@ -27,6 +27,7 @@ Zakirov
 # ENGLISH
 one's
 multi
+depluralization
 
 # PROGRAMMING JARGON
 API
