@@ -28,6 +28,7 @@ Zakirov
 one's
 multi
 depluralization
+auditability
 
 # PROGRAMMING JARGON
 API
@@ -127,3 +128,4 @@ subvalues
 formatter
 formatters
 lookup
+wipeout

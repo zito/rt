@@ -106,9 +106,9 @@ See also 'rt-shredder --help'.
 
 Shredder's WebUI integrates into RT's WebUI.  You can find it in the
 Configuration->Tools->Shredder tab.  The interface is similar to the
-CLI and gives you the same functionality. You can find 'Shredder' link
-at the bottom of tickets search results, so you could wipeout tickets
-in the way similar to the bulk update.
+command-line interface and gives you the same functionality. You can find the
+'Shredder' link at the bottom of tickets search results, so you can wipeout
+tickets much in the same way that you would bulk update them.
 
 
 =head1 DATA STORAGE AND BACKUPS
@@ -171,7 +171,7 @@ RT objects and classes.  The API is not well documented yet, but you
 can find usage examples in L<rt-shredder> and the
 F<lib/t/regression/shredder/*.t> test files.
 
-However, here is a small example that do the same action as in CLI
+However, here is a small example that do the same action as in the command-line
 example from L</SYNOPSIS>:
 
   use RT::Shredder;
@@ -257,7 +257,7 @@ our @SUPPORTED_OBJECTS = qw(
     RT::Shredder::Init( %default_options );
 
 C<RT::Shredder::Init()> should be called before creating an
-RT::Shredder object.  It iniitalizes RT and loads the RT
+RT::Shredder object.  It initializes RT and loads the RT
 configuration.
 
 %default_options are passed to every C<<RT::Shredder->new>> call.
@@ -302,12 +302,12 @@ sub _Init
 
 =head4 CastObjectsToRecords( Objects => undef )
 
-Cast objects to the C<RT::Record> objects or its ancesstors.
+Cast objects into C<RT::Record> objects or its ancestors.
 Objects can be passed as SCALAR (format C<< <class>-<id> >>),
-ARRAY, C<RT::Record> ancesstors or C<RT::SearchBuilder> ancesstor.
+ARRAY, C<RT::Record> ancestors or C<RT::SearchBuilder> ancestor.
 
-Most methods that takes C<Objects> argument use this method to
-cast argument value to list of records.
+Most methods that take an C<Objects> argument use this method to
+cast the argument's value into a list of records.
 
 Returns an array of records.
 
@@ -396,8 +396,8 @@ sub PutObjects
 
 Puts record object into cache and returns its cache entry.
 
-B<NOTE> that this method support B<only C<RT::Record> object or its ancesstor
-objects>, if you want put mutliple objects or objects represented by different
+B<NOTE> that this method support B<only C<RT::Record> object or its ancestor
+objects>, if you want put multiple objects or objects represented by different
 classes then use C<PutObjects> method instead.
 
 =cut
@@ -628,11 +628,11 @@ path by next rules:
 
 * if C<FileName> has C<XXXX> (exactly four uppercase C<X> letters) then it would be changed with digits from 0000 to 9999 range, with first one free value;
 
-* if C<FileName> has C<%T> then it would be replaced with the current date and time in the C<YYYY-MM-DDTHH:MM:SS> format. Note that using C<%t> may still generate not unique names, using C<XXXX> recomended.
+* if C<FileName> has C<%T> then it would be replaced with the current date and time in the C<YYYY-MM-DDTHH:MM:SS> format. Note that using C<%t> may still generate not unique names, using C<XXXX> recommended.
 
 * if C<FromStorage> argument is true (default behaviour) then result path would always be relative to C<StoragePath>;
 
-* if C<FromStorage> argument is false then result would be relative to the current dir unless it's already absolute path.
+* if C<FromStorage> argument is false then result would be relative to the current directory unless it's already absolute path.
 
 Returns an absolute path of the file.
 
@@ -714,7 +714,7 @@ sub GetFileName
 
 =head4 StoragePath
 
-Returns an absolute path to the storage dir.  See
+Returns an absolute path to the storage directory.  See
 L<CONFIGURATION/$ShredderStoragePath>.
 
 See also description of the L</GetFileName> method.
