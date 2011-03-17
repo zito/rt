@@ -390,9 +390,9 @@ sub _FillInTemplateURL {
 
 =head2 ValueLinkURL
 
-Returns a filled in URL template for this ObjectCustomFieldValue, suitable for 
-constructing a hyperlink in RT's webui. Returns undef if this custom field doesn't have
-a LinkValueTo
+Returns a filled-in URL template for this ObjectCustomFieldValue, suitable for
+constructing a hyperlink in RT's web interface. Returns C<undef> if this custom
+field doesn't have a C<LinkValueTo>.
 
 =cut
 
@@ -405,9 +405,9 @@ sub LinkValueTo {
 
 =head2 ValueIncludeURL
 
-Returns a filled in URL template for this ObjectCustomFieldValue, suitable for 
-constructing a hyperlink in RT's webui. Returns undef if this custom field doesn't have
-a IncludeContentForValue
+Returns a filled-in URL template for this ObjectCustomFieldValue, suitable for
+constructing a hyperlink in RT's web interface. Returns C<undef> if this custom
+field doesn't have a C<IncludeContentForValue>.
 
 =cut
 
