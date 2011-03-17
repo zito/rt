@@ -144,20 +144,21 @@ sub CustomFieldObj {
 
 =head2 Sorting custom fields applications
 
-Custom fields sorted on multiple layers. First of all custom
-fields with different lookup type are sorted independently. All
-global custom fields have fixed order for all objects, but you
-can insert object specific custom fields between them. Object
-specific custom fields can be applied to several objects and
-be on different place. For example you have GCF1, GCF2, LCF1,
-LCF2 and LCF3 that applies to tickets. You can place GCF2
-above GCF1, but they will be in the same order in all queues.
-However, LCF1 and other local can be placed at any place
-for particular queue: above global, between them or below.
+Custom fields are sorted in multiple layers. First of all, custom fields with
+different lookup types are sorted independently. All global custom fields have
+fixed order for all objects, but you can insert object specific custom fields
+between them. Object-specific custom fields can be applied to several objects
+and be in different places.
+
+For example, you have C<GCF1>, C<GCF2>, C<LCF1>, C<LCF2> and C<LCF3> that each
+apply to tickets. You can place C<GCF2> above C<GCF1>, but they will be in the
+same order in all queues. However, C<LCF1> and other local custom fields can be
+placed at any place for particular queue: above globals, between them, or below
+globals.
 
 =head3 MoveUp
 
-Moves custom field up. See </Sorting custom fields applications>.
+Moves custom field up. See L</Sorting custom fields applications>.
 
 =cut
 
