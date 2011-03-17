@@ -204,7 +204,7 @@ sub LoadByName {
 
 =head2 LanguageHandle
 
-Returns this current user's langauge handle. Should take a language
+Returns this current user's language handle. Should take a language
 specification. but currently doesn't
 
 =cut 
@@ -260,7 +260,9 @@ sub loc_fuzzy {
 
 =head2 CurrentUser
 
-Return the current currentuser object
+Return the current L<RT::CurrentUser> object. This is of course what you
+already have, but this means you can call C<< ->CurrentUser >> a bit more
+freely.
 
 =cut
 
