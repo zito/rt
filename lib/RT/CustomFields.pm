@@ -217,8 +217,10 @@ sub LimitToNotApplied {
 
 =head2 LimitToApplied
 
-Limits collection to custom fields to listed objects or any corespondingly. Use
-zero to mean global.
+Takes a list of object IDs. This limits the collection to the custom fields of
+the listed objects.
+
+Use an ID of 0 to mean global.
 
 =cut
 
@@ -239,7 +241,7 @@ sub LimitToApplied {
 
 =head2 LimitToGlobalOrQueue QUEUEID
 
-DEPRECATED since CFs are applicable not only to tickets these days.
+DEPRECATED since custom fields are applicable not only to tickets these days.
 
 Limits the set of custom fields found to global custom fields or those tied to the queue with ID QUEUEID
 
@@ -255,7 +257,7 @@ sub LimitToGlobalOrQueue {
 
 =head2 LimitToQueue QUEUEID
 
-DEPRECATED since CFs are applicable not only to tickets these days.
+DEPRECATED since custom fields are applicable not only to tickets these days.
 
 Takes a queue id (numerical) as its only argument. Makes sure that
 Scopes it pulls out apply to this queue (or another that you've selected with
@@ -278,7 +280,7 @@ sub LimitToQueue  {
 
 =head2 LimitToGlobal
 
-DEPRECATED since CFs are applicable not only to tickets these days.
+DEPRECATED since custom fields are applicable not only to tickets these days.
 
 Makes sure that Scopes it pulls out apply to all queues
 (or another that you've selected with
@@ -299,7 +301,7 @@ sub LimitToGlobal  {
 
 =head2 ApplySortOrder
 
-Sort custom fields according to thier order application to objects. It's
+Sort custom fields according to their order of application to objects. It's
 expected that collection contains only records of one
 L<RT::CustomField/LookupType> and applied to one object or globally
 (L</LimitToGlobalOrObjectId>), otherwise sorting makes no sense.
