@@ -95,8 +95,9 @@ Creates a new entry in the Scrips table. Takes a paramhash with:
 
 
 
-Returns (retval, msg);
-retval is 0 for failure or scrip id.  msg is a textual description of what happened.
+Returns (id, message);
+C<id> is 0 on failure, or scrip ID on success. message is a textual description
+of what happened.
 
 =cut
 
@@ -210,7 +211,7 @@ sub Delete {
 
 =head2 QueueObj
 
-Retuns an RT::Queue object with this Scrip's queue
+Returns the L<RT::Queue> object for this scrip's queue.
 
 =cut
 
@@ -229,7 +230,7 @@ sub QueueObj {
 
 =head2 ActionObj
 
-Retuns an RT::Action object with this Scrip\'s Action
+Returns the L<RT::ScripAction> object for this scrip's action.
 
 =cut
 
@@ -252,7 +253,7 @@ sub ActionObj {
 
 =head2 ConditionObj
 
-Retuns an L<RT::ScripCondition> object with this Scrip's IsApplicable
+Returns the L<RT::ScripCondition> object for this scrip's condition.
 
 =cut
 
@@ -281,7 +282,7 @@ sub LoadModules {
 
 =head2 TemplateObj
 
-Retuns an RT::Template object with this Scrip\'s Template
+Returns the L<RT::Template> object for this scrip's template.
 
 =cut
 
@@ -541,8 +542,7 @@ sub _Value {
 
 =head2 CurrentUserHasRight
 
-Helper menthod for HasRight. Presets Principal to CurrentUser then 
-calls HasRight.
+Wrapper method for L</HasRight>, defaulting C<Principal> to the current user.
 
 =cut
 
@@ -558,7 +558,7 @@ sub CurrentUserHasRight {
 
 =head2 HasRight
 
-Takes a param-hash consisting of "Right" and "Principal"  Principal is 
+Takes a paramhash consisting of "Right" and "Principal"  Principal is 
 an RT::User object or an RT::CurrentUser object. "Right" is a textual
 Right string that applies to Scrips.
 
@@ -589,12 +589,12 @@ sub HasRight {
 =head2 CompileCheck
 
 This routine compile-checks the custom prepare, commit, and is-applicable code
-to see if they are syntactically valid Perl. We eval them in a codeblock to
+to see if they are syntactically valid Perl. We eval them in a code block to
 avoid actually executing the code.
 
 If one of the fields has a compile error, only the first is reported.
 
-Returns an (ok, message) pair.
+Returns an (OK, message) pair.
 
 =cut
 
@@ -612,7 +612,7 @@ sub CompileCheck {
         next if !$@;
 
         my $error = $@;
-        return (0, $self->loc("Couldn't compile [_1] codeblock '[_2]': [_3]", $method, $code, $error));
+        return (0, $self->loc("Couldn't compile [_1] code block '[_2]': [_3]", $method, $code, $error));
     }
 }
 
