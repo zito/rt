@@ -58,11 +58,11 @@ RT::Handle - RT's database handle
 
 =head1 DESCRIPTION
 
-C<RT::Handle> is RT specific wrapper over one of L<DBIx::SearchBuilder::Handle>
-classes. As RT works with different types of DBs we subclass repsective handler
-from L<DBIx::SerachBuilder>. Type of the DB is defined by C<DatabasseType> RT's
-config option. You B<must> load this module only when the configs have been
-loaded.
+C<RT::Handle> is an RT-specific wrapper for one of the
+L<DBIx::SearchBuilder::Handle> subclasses. Since RT works with different
+database engines, we subclass the database handler class of L<DBIx::SearchBuilder>
+chosen by RT's C<DatabaseType> config option. You B<must> load this module only
+after the configuration has been fully loaded.
 
 =cut
 
@@ -292,7 +292,7 @@ sub CheckCompatibility {
     return (1)
 }
 
-=head2 Database maintanance
+=head2 Database maintenance
 
 =head3 CreateDatabase $DBH
 
@@ -1046,7 +1046,7 @@ sub InsertData {
 
 =head2 ACLEquivGroupId
 
-Given a userid, return that user's acl equivalence group
+Given a user ID, return that user's ACL equivalence group.
 
 =cut
 
@@ -1069,8 +1069,9 @@ sub ACLEquivGroupId {
 =head2 QueryHistory
 
 Returns the SQL query history associated with this handle. The top level array
-represents a lists of request. Each request is a hash with metadata about the
-request (such as the URL) and a list of queries. You'll probably not be using this.
+represents a list of request. Each request is a hash with metadata about the
+request (such as the C<Path>) and a list of C<Queries>. You'll probably not be
+using this.
 
 =cut
 
@@ -1082,9 +1083,20 @@ sub QueryHistory {
 
 =head2 AddRequestToHistory
 
-Adds a web request to the query history. It must be a hash with keys Path (a
-string) and Queries (an array reference of arrays, where elements are time,
-sql, bind parameters, and duration).
+Adds a web request to the query history. It must be a hash with the following keys:
+
+=over 4
+
+=item C<Path>
+
+A string representing the web path which caused this SQL query.
+
+=item C<Queries>
+
+An array reference of arrays, where elements are time, the SQL query as a
+string, bind parameters, and duration.
+
+=back
 
 =cut
 
