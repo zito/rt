@@ -92,6 +92,7 @@ textbox
 usernames
 denormalizes
 canonicalizes
+reinitializes
 
 # RT JARGON
 ACEs

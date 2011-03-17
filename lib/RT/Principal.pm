@@ -228,7 +228,7 @@ sub RevokeRight {
 =head2 HasRight (Right => 'right' Object => undef)
 
 Checks to see whether this principal has the right "Right" for the Object
-specified. This takes the params:
+specified. This takes the following parameters:
 
 =over 4
 
@@ -596,7 +596,7 @@ set of objects. Takes Right, EquiveObjects,
 IncludeSystemRights and IncludeSuperusers arguments.
 
 IncludeSystemRights is true by default, rights
-granted systemwide are ignored when IncludeSystemRights
+granted system-wide are ignored when IncludeSystemRights
 is set to a false value.
 
 IncludeSuperusers is true by default, SuperUser right
