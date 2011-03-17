@@ -264,7 +264,7 @@ sub _DecodeBody {
 
 =head2 _PostProcessNewEntity
 
-cleans up and postprocesses a newly parsed MIME Entity
+Cleans up and post-processes a newly parsed L<MIME::Entity> object.
 
 =cut
 
@@ -515,18 +515,22 @@ sub _SetupMIMEParser {
 
 =head2 ParseEmailAddress string
 
-Returns a list of Email::Address objects
-Works around the bug that Email::Address 1.889 and earlier
-doesn't handle local-only email addresses (when users pass
-in just usernames on the RT system in fields that expect
-Email Addresses)
+Returns a list of L<Email::Address> objects.
 
-We don't handle the case of 
-bob, fred@bestpractical.com 
+This method works around a bug that L<Email::Address> 1.889 and earlier have
+which causes it to not handle local-only email addresses (when users pass in
+just usernames on the RT system in fields that expect Email Addresses)
+
+We don't handle the case of
+
+    bob, fred@bestpractical.com
+
 because we don't want to fail parsing
-bob, "Falcone, Fred" <fred@bestpractical.com>
-The next release of Email::Address will have a new method
-we can use that removes the bandaid
+
+    bob, "Falcone, Fred" <fred@bestpractical.com>
+
+The next release of L<Email::Address> will have a new method
+we can use that removes this band-aid.
 
 =cut
 

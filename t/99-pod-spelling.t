@@ -88,6 +88,7 @@ overridable
 variable's
 iCalendar
 textbox
+usernames
 
 # RT JARGON
 ACEs
