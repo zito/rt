@@ -6,8 +6,8 @@ use Test::More;
 eval "use Test::Spelling";
 plan skip_all => "Test::Spelling required for testing POD spelling" if $@;
 
-# strip comments
-my @stopwords = map { s/#.*// } <DATA>;
+# strip comments and empty lines
+my @stopwords = grep { /\S/ } map { s/#.*//; $_ } <DATA>;
 
 add_stopwords(@stopwords);
 
