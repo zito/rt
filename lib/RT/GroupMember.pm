@@ -224,7 +224,7 @@ sub Create {
 
 Create { Group => undef, Member => undef }
 
-Creates an entry in the groupmembers table, which lists a user
+Creates an entry in the C<groupmembers> table, which lists a user
 as a member of himself. This makes ACL checks a whole bunch easier.
 This happens once on user create and never ever gets yanked out.
 
