@@ -69,12 +69,14 @@ reblesses
 resultset
 runtime
 startup
+subdirectory
 tuple
 tuples
 unicode
 unix
 username
 workflow
+hostname
 
 # RT JARGON
 ACEs

@@ -569,8 +569,9 @@ sub UnprivilegedUsers {
 
 =head2 Plugins
 
-Returns a listref of all Plugins currently configured for this RT instance.
-You can define plugins by adding them to the @Plugins list in your RT_SiteConfig
+Returns an array reference of all Plugins currently configured for this RT
+instance. You can define plugins by adding them to the C<@Plugins> list in your
+F<RT_SiteConfig.pm>
 
 =cut
 
@@ -586,7 +587,8 @@ sub Plugins {
 
 =head2 PluginDirs
 
-Takes optional subdir (e.g. po, lib, etc.) and return plugins' dirs that exist.
+Takes an optional subdirectory (e.g. F<po>, F<lib>, etc.) and returns plugins'
+directories that exist.
 
 This code chacke plugins names or anything else and required when main config
 is loaded to load plugins' configs.
@@ -640,7 +642,8 @@ sub InitPluginPaths {
 
 =head2 InitPlugins
 
-Initialze all Plugins found in the RT configuration file, setting up their lib and HTML::Mason component roots.
+Initialize all Plugins found in the RT configuration file, setting up their lib
+and HTML::Mason component roots.
 
 =cut
 
@@ -716,9 +719,8 @@ sub CanonicalizeGeneratedPaths {
 
 =head2 AddJavaScript
 
-helper method to add js files to C<JSFiles> config.
-to add extra css files, you can add the following line
-in the plugin's main file:
+Helper method to add JavaScript files to C<JSFiles> config. To add extra
+JavaScript files, you can add the following line in the plugin's main file:
 
     RT->AddJavaScript( 'foo.js', 'bar.js' ); 
 
