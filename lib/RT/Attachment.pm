@@ -223,7 +223,7 @@ sub Import {
 
 =head2 TransactionObj
 
-Returns the transaction object asscoiated with this attachment.
+Returns the transaction object associated with this attachment.
 
 =cut
 
@@ -480,7 +480,7 @@ sub Addresses {
 
 =head2 NiceHeaders
 
-Returns a multi-line string of the To, From, Cc, Date and Subject headers.
+Returns a multiline string of the To, From, Cc, Date and Subject headers.
 
 =cut
 
@@ -625,7 +625,7 @@ sub SplitHeaders {
 =head2 _SplitHeaders
 
 Returns an array of this attachment object's headers, with one header 
-per array entry. multiple lines are folded.
+per array entry. Multiple lines are folded.
 
 
 =cut

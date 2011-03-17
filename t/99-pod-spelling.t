@@ -80,6 +80,7 @@ hostname
 Mozilla's
 Intercal
 subclause
+longtext
 
 # RT JARGON
 ACEs
