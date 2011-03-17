@@ -83,6 +83,7 @@ subclause
 longtext
 ENTRYAGGREGATOR
 deserializing
+recursing
 
 # RT JARGON
 ACEs

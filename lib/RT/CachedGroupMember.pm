@@ -183,9 +183,9 @@ sub Create {
 
 =head2 Delete
 
-Deletes the current CachedGroupMember from the group it's in and cascades 
-the delete to all submembers. This routine could be completely excised if
-mysql supported foreign keys with cascading deletes.
+Deletes the current CachedGroupMember from the group it's in and cascades the
+delete to all children CachedGroupMember records. This routine could be
+completely excised if MySQL supported foreign keys with cascading deletes.
 
 =cut 
 
@@ -225,11 +225,10 @@ sub Delete {
 
 =head2 SetDisabled
 
-SetDisableds the current CachedGroupMember from the group it's in and cascades 
-the SetDisabled to all submembers. This routine could be completely excised if
-mysql supported foreign keys with cascading SetDisableds.
+Sets the current CachedGroupMember as disabled, recursing over all children
+CachedGroupMember records.
 
-=cut 
+=cut
 
 sub SetDisabled {
     my $self = shift;
