@@ -235,10 +235,11 @@ Limit the result set to articles which have or do not have the custom field
 value listed, using a left join to catch things where no rows match.
 
 HASH needs the following fields: 
+
    FIELD (A custom field id) or undef for any custom field
    ENTRYAGGREGATOR => (AND, OR)
    OPERATOR ('=', 'LIKE', '!=', 'NOT LIKE')
-   VALUE ( a single scalar value or a list of possible values to be concatenated with ENTRYAGGREGATOR)
+   VALUE (a single scalar value or a list of possible values to be concatenated with ENTRYAGGREGATOR)
 
 The subclause that the LIMIT statement(s) should be done in can also
 be passed in with a SUBCLAUSE parameter.
@@ -479,9 +480,9 @@ sub LimitReferredToBy {
 
 # }}}
 
-=head2 LimitHostlistClasses
+=head2 LimitHotlistClasses
 
-Only fetch Articles from classes where Hotlist is true.
+Only fetch Articles from classes where HotList is true.
 
 =cut
 
