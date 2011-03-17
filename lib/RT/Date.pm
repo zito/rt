@@ -140,18 +140,18 @@ sub new {
 
 =head2 Set
 
-Takes a param hash with the fields C<Format>, C<Value> and C<Timezone>.
+Takes a paramhash with the fields C<Format>, C<Value> and C<Timezone>.
 
-If $args->{'Format'} is 'unix', takes the number of seconds since the epoch.
+If $args->{'Format'} is 'C<unix>', takes the number of seconds since the epoch.
 
-If $args->{'Format'} is ISO, tries to parse an ISO date.
+If $args->{'Format'} is 'C<ISO>', tries to parse an ISO date.
 
-If $args->{'Format'} is 'unknown', require Time::ParseDate and make it figure
-things out. This is a heavyweight operation that should never be called from
-within RT's core. But it's really useful for something like the textbox date
-entry where we let the user do whatever they want.
+If $args->{'Format'} is 'C<unknown>', require L<Time::ParseDate> and let it figure
+things out. This is an expensive operation that should never be called from
+within RT's core. But it's really useful for something like a textbox date
+entry where we let the user specify a date however they want.
 
-If $args->{'Value'} is 0, assumes you mean never.
+If $args->{'Value'} is 0, this assumes you mean never.
 
 =cut
 
@@ -246,10 +246,10 @@ sub SetToNow {
     return $_[0]->Unix(time);
 }
 
-=head2 SetToMidnight [Timezone => 'utc']
+=head2 SetToMidnight [Timezone => 'C<utc>']
 
 Sets the date to midnight (at the beginning of the day).
-Returns the unixtime at midnight.
+Returns the UNIX time at midnight.
 
 Arguments:
 
@@ -275,12 +275,12 @@ sub SetToMidnight {
 
 =head2 Diff
 
-Takes either an C<RT::Date> object or the date in unixtime format as a string,
-if nothing is specified uses the current time.
+Takes either an C<RT::Date> object or the date in UNIX time format as a string.
+If nothing is specified, the current time is used.
 
-Returns the differnce between the time in the current object and that time
-as a number of seconds. Returns C<undef> if any of two compared values is
-incorrect or not set.
+Returns the difference between the time in the current object and the given time
+as a number of seconds. Returns C<undef> if any of the two compared values is
+incorrect or unset.
 
 =cut
 
@@ -301,12 +301,9 @@ sub Diff {
 
 =head2 DiffAsString
 
-Takes either an C<RT::Date> object or the date in unixtime format as a string,
-if nothing is specified uses the current time.
-
-Returns the differnce between C<$self> and that time as a number of seconds as
-a localized string fit for human consumption. Returns empty string if any of
-two compared values is incorrect or not set.
+Returns L</Diff> as a localized string (using L</DurationAsString>) fit for
+human consumption. If L</Diff> returns C<undef> due to a problem then this will
+return the empty string.
 
 =cut
 
@@ -372,8 +369,8 @@ sub DurationAsString {
 
 =head2 AgeAsString
 
-Takes nothing. Returns a string that's the differnce between the
-time in the object and now.
+Takes no arguments. Returns a string representing the difference between the
+time in the object and right now, using L</DiffAsString>.
 
 =cut
 
@@ -383,12 +380,12 @@ sub AgeAsString { return $_[0]->DiffAsString }
 
 =head2 AsString
 
-Returns the object's time as a localized string with curent user's prefered
+Returns the object's time as a localized string with the current user's preferred
 format and timezone.
 
-If the current user didn't choose prefered format then system wide setting is
-used or L</DefaultFormat> if the latter is not specified. See config option
-C<DateTimeFormat>.
+If the current user didn't choose a preferred format, then the system wide
+setting C<DateTimeFormat> is used. If that is unspecified, then
+L</DefaultFormat> is used.
 
 =cut
 
@@ -407,9 +404,8 @@ sub AsString {
 
 =head2 GetWeekday DAY
 
-Takes an integer day of week and returns a localized string for
-that day of week. Valid values are from range 0-6, Note that B<0
-is sunday>.
+Takes an integer day of week and returns a localized string for that day of
+week. Valid values are in the range zero to six. Note that B<0 is Sunday>.
 
 =cut
 
@@ -440,9 +436,9 @@ sub GetMonth {
 
 =head2 AddSeconds SECONDS
 
-Takes a number of seconds and returns the new unix time.
+Takes a number of seconds and returns the new UNIX time.
 
-Negative value can be used to substract seconds.
+You may pass a negative value which act like a subtraction.
 
 =cut
 
@@ -458,10 +454,11 @@ sub AddSeconds {
 =head2 AddDays [DAYS]
 
 Adds C<24 hours * DAYS> to the current time. Adds one day when
-no argument is specified. Negative value can be used to substract
-days.
+no argument is specified.
 
-Returns new unix time.
+You may pass a negative value which act like a subtraction.
+
+Returns the new UNIX time.
 
 =cut
 
@@ -479,9 +476,9 @@ Adds 24 hours to the current time. Returns new unix time.
 
 sub AddDay { return $_[0]->AddSeconds($DAY) }
 
-=head2 Unix [unixtime]
+=head2 Unix
 
-Optionally takes a date in unix seconds since the epoch format.
+Optionally takes a date in UNIX seconds since the epoch format.
 Returns the number of seconds since the epoch
 
 =cut
@@ -510,10 +507,10 @@ sub DateTime {
 
 =head2 Date
 
-Takes Format argument which allows you choose date formatter.
-Pass throught other arguments to the formatter method.
+Takes a C<Format> argument which allows you choose date formatter.
+This passes through any arguments to the formatter method.
 
-Returns the object's formatted date. Default formatter is ISO.
+Returns the object's formatted date. Default formatter is C<ISO>.
 
 =cut
 
@@ -534,9 +531,8 @@ sub Time {
 
 =head2 Get
 
-Returnsa a formatted and localized string that represets time of
-the current object.
-
+Returns a formatted and localized string that represents the time of the
+current object.
 
 =cut
 
@@ -551,8 +547,8 @@ sub Get
 
 =head2 Output formatters
 
-Fomatter is a method that returns date and time in different configurable
-format.
+Formatter is a method that returns the date and time in different configurable
+formats.
 
 Each method takes several arguments:
 
@@ -707,11 +703,11 @@ sub LocalizedDateTime
 =head3 ISO
 
 Returns the object's date in ISO format C<YYYY-MM-DD mm:hh:ss>.
-ISO format is locale independant, but adding timezone offset info
+This ISO format is locale independent, but adding timezone offset info
 is not implemented yet.
 
 Supports arguments: C<Timezone>, C<Date>, C<Time> and C<Seconds>.
-See </Output formatters> for description of arguments.
+See L</Output formatters> for description of arguments.
 
 =cut
 
@@ -744,12 +740,12 @@ sub ISO {
 Returns the object's date and time in W3C date time format
 (L<http://www.w3.org/TR/NOTE-datetime>).
 
-Format is locale independand and is close enought to ISO, but
+Format is locale independent and is close enough to ISO, but
 note that date part is B<not optional> and output string
 has timezone offset mark in C<[+-]hh:mm> format.
 
 Supports arguments: C<Timezone>, C<Time> and C<Seconds>.
-See </Output formatters> for description of arguments.
+See L</Output formatters> for description of arguments.
 
 =cut
 
@@ -789,11 +785,11 @@ sub W3CDTF {
 
 Returns the object's date and time in RFC2822 format,
 for example C<Sun, 06 Nov 1994 08:49:37 +0000>.
-Format is locale independand as required by RFC. Time
+Format is locale independent as required by the RFC. Time
 part always has timezone offset in digits with sign prefix.
 
 Supports arguments: C<Timezone>, C<Date>, C<Time>, C<DayOfWeek>
-and C<Seconds>. See </Output formatters> for description of
+and C<Seconds>. See L</Output formatters> for description of
 arguments.
 
 =cut
@@ -831,9 +827,9 @@ Returns the object's date and time in RFC2616 (HTTP/1.1) format,
 for example C<Sun, 06 Nov 1994 08:49:37 GMT>. While the RFC describes
 version 1.1 of HTTP, but the same form date can be used in version 1.0.
 
-Format is fixed length, locale independand and always represented in GMT
-what makes it quite useless for users, but any date in HTTP transfers
-must be presented using this format.
+Format is fixed length, locale independent and always represented in GMT. This
+makes this method useless for users, but any date in HTTP transfers must be
+presented using this format.
 
     HTTP-date = rfc1123 | ...
     rfc1123   = wkday "," SP date SP time SP "GMT"
@@ -847,7 +843,7 @@ must be presented using this format.
 
 Supports arguments: C<Date> and C<Time>, but you should use them only for
 some personal reasons, RFC2616 doesn't define any optional parts.
-See </Output formatters> for description of arguments.
+See L</Output formatters> for description of arguments.
 
 =cut
 
@@ -869,7 +865,7 @@ sub RFC2616 {
 Returns the object's date and time in iCalendar format,
 
 Supports arguments: C<Date> and C<Time>.
-See </Output formatters> for description of arguments.
+See L</Output formatters> for description of arguments.
 
 =cut
 
@@ -915,7 +911,7 @@ sub _SplitOffset {
 =head3 Localtime $context [$time]
 
 Takes one mandatory argument C<$context>, which determines whether
-we want "user local", "system" or "UTC" time. Also, takes optional
+we want "user local", "system" or "C<UTC>" time. Also, takes optional
 argument unix C<$time>, default value is the current unix time.
 
 Returns object's date and time in the format provided by perl's
@@ -957,17 +953,17 @@ sub Localtime
 =head3 Timelocal $context @time
 
 Takes argument C<$context>, which determines whether we should
-treat C<@time> as "user local", "system" or "UTC" time.
+treat C<@time> as "user local", "system" or "C<UTC>" time.
 
 C<@time> is array returned by L<Localtime> functions. Only first
 six elements are mandatory - $sec, $min, $hour, $mday, $mon and $year.
 You may pass $wday, $yday and $isdst, these are ignored.
 
-If you pass C<$offset> as ninth argument, it's used instead of
-C<$context>. It's done such way as code 
-C<$self->Timelocal('utc', $self->Localtime('server'))> doesn't
-makes much sense and most probably would produce unexpected
-result, so the method ignore 'utc' context and uses offset
+If you pass C<$offset> as the ninth argument, it's used instead of
+C<$context>. It's done this way because code like
+C<< $self->Timelocal('utc', $self->Localtime('server')) >> doesn't
+make much sense and would probably produce unexpected
+results. So this method ignores 'C<utc>' context and uses the offset
 returned by L<Localtime> method.
 
 =cut
@@ -1001,21 +997,21 @@ sub Timelocal {
 
 Returns the timezone name.
 
-Takes one argument, C<$context> argument which could be C<user>, C<server> or C<utc>.
+Takes one argument, C<context>, which could be C<user>, C<server> or C<utc>.
 
 =over
 
-=item user
+=item C<user>
 
 Default value is C<user> that mean it returns current user's Timezone value.
 
-=item server
+=item C<server>
 
 If context is C<server> it returns value of the C<Timezone> RT config option.
 
-=item  utc
+=item C<utc>
 
-If both server's and user's timezone names are undefined returns 'UTC'.
+If both server's and user's timezone names are undefined returns "C<UTC>".
 
 =back
 

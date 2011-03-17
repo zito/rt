@@ -86,6 +86,8 @@ deserializing
 recursing
 overridable
 variable's
+iCalendar
+textbox
 
 # RT JARGON
 ACEs
@@ -113,3 +115,5 @@ HotList
 attribute's
 subvalue
 subvalues
+formatter
+formatters
