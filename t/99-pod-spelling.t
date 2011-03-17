@@ -37,6 +37,7 @@ DSN
 GPG
 GnuPG
 MUA
+MUAs
 SQL
 STDERR
 STDOUT
@@ -90,6 +91,7 @@ iCalendar
 textbox
 usernames
 denormalizes
+canonicalizes
 
 # RT JARGON
 ACEs

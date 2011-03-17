@@ -162,8 +162,8 @@ sub encoding { 'utf-8' }
 
 =head2 SetMIMEEntityToUTF8 $entity
 
-An utility function which will try to convert entity body into utf8.
-It's now a wrap-up of SetMIMEEntityToEncoding($entity, 'utf-8').
+A utility function which will try to convert entity body into C<utf8>.
+It's now a wrapper for C<SetMIMEEntityToEncoding($entity, 'utf-8')>.
 
 =cut
 
@@ -175,10 +175,10 @@ sub SetMIMEEntityToUTF8 {
 
 =head2 IsTextualContentType $type
 
-An utility function that determines whether $type is I<textual>, meaning
+An utility function that determines whether C<$type> is I<textual>, meaning
 that it can sensibly be converted to Unicode text.
 
-Currently, it returns true iff $type matches this regular expression
+Currently, it returns true if and only if C<$type> matches this regular expression
 (case-insensitively):
 
     ^(?:text/(?:plain|html)|message/rfc822)\b
@@ -194,15 +194,22 @@ sub IsTextualContentType {
 
 =head2 SetMIMEEntityToEncoding $entity, $encoding
 
-An utility function which will try to convert entity body into specified
-charset encoding (encoded as octets, *not* unicode-strings).  It will
-iterate all the entities in $entity, and try to convert each one into
-specified charset if whose Content-Type is 'text/plain'.
+A utility function which will try to convert the entity body into the specified
+charset encoding (encoded as octets, *not* unicode-strings). It will
+iterate over all the entities in C<$entity>, and try to convert each one into
+specified charset if the entity's C<Content-Type> is 'text/plain'.
 
-the methods are tries in order:
-1) to convert the entity to $encoding, 
-2) to interpret the entity as iso-8859-1 and then convert it to $encoding,
-3) forcibly convert it to $encoding.
+These methods are tried in order:
+
+=over 4
+
+=item convert the entity to C<$encoding>
+
+=item interpret the entity as C<iso-8859-1> and then convert it to C<$encoding>
+
+=item forcibly convert it to C<$encoding>
+
+=back
 
 This function doesn't return anything meaningful.
 
@@ -302,14 +309,14 @@ sub SetMIMEEntityToEncoding {
 =head2 DecodeMIMEWordsToUTF8 $raw
 
 An utility method which mimics MIME::Words::decode_mimewords, but only
-limited functionality.  This function returns an utf-8 string.
+limited functionality.  This function returns a C<utf-8> string.
 
-It returns the decoded string, or the original string if it's not
-encoded.  Since the subroutine converts specified string into utf-8
-charset, it should not alter a subject written in English.
+It returns the decoded string, or the original string if it's not encoded.
+Since the subroutine converts the specified string into the C<utf-8> charset,
+it should not alter a subject written in English.
 
-Why not use MIME::Words directly?  Because it fails in RT when I
-tried.  Maybe it's ok now.
+TODO: Why not use L<MIME::Words> directly?  Because it fails in RT when I
+tried. Maybe it's okay now.
 
 =cut
 
@@ -538,8 +545,10 @@ sub _GuessCharset {
 
 =head2 _CanonicalizeCharset NAME
 
-canonicalize charset, return lowercase version.
-special cases are: gb2312 => gbk, utf8 => utf-8
+This canonicalizes the provided charset, returning the lowercase version.
+
+Special cases are: C<gb2312> becomes C<gbk>, C<utf8> and C<utf-8-strict> become
+C<utf-8>.
 
 =cut
 
@@ -564,7 +573,7 @@ sub _CanonicalizeCharset {
 
 Converts a MIME Head from one encoding to another. This totally violates the RFC.
 We should never need this. But, Surprise!, MUAs are badly broken and do this kind of stuff
-all the time
+all the time.
 
 
 =cut
