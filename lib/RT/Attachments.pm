@@ -101,9 +101,9 @@ sub CleanSlate {
 
 =head2 TransactionAlias
 
-Returns alias for transactions table with applied join condition.
-Always return the same alias, so if you want to build some complex
-or recursive joining then you have to create new alias youself.
+Returns the alias for the joined transactions table. This always returns the
+same alias, so if you want to build some complex or recursive joins then you
+must create a new alias yourself.
 
 =cut
 

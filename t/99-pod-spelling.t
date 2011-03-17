@@ -81,6 +81,7 @@ Mozilla's
 Intercal
 subclause
 longtext
+ENTRYAGGREGATOR
 
 # RT JARGON
 ACEs
