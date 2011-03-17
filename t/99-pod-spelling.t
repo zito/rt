@@ -84,6 +84,8 @@ longtext
 ENTRYAGGREGATOR
 deserializing
 recursing
+overridable
+variable's
 
 # RT JARGON
 ACEs

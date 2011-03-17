@@ -58,7 +58,7 @@ use File::Spec ();
 
     RT::Config - RT's config
 
-=head1 SYNOPSYS
+=head1 SYNOPSIS
 
     # get config object
     use RT::Config;
@@ -88,13 +88,13 @@ Second file is F<RT_SiteConfig.pm> - site config file. You can use it
 to customize your RT instance. In this file you can override any option
 listed in core config file.
 
-RT extensions could also provide thier config files. Extensions should
+RT extensions could also provide their config files. Extensions should
 use F<< <NAME>_Config.pm >> and F<< <NAME>_SiteConfig.pm >> names for
 config files, where <NAME> is extension name.
 
-B<NOTE>: All options from RT's config and extensions' configs are saved
-in one place and thus extension could override RT's options, but it is not
-recommended.
+B<NOTE>: All options from RT's config and extensions' configuration files are
+saved in one place and thus extension could override RT's options, but it is
+not recommended.
 
 =cut
 
@@ -104,7 +104,7 @@ Hash of Config options that may be user overridable
 or may require more logic than should live in RT_*Config.pm
 
 Keyed by config name, there are several properties that
-can be set for each config optin:
+can be set for each config option:
 
  Section     - What header this option should be grouped
                under on the user Settings page
@@ -113,7 +113,7 @@ can be set for each config optin:
                for display to the user
  Widget      - Mason component path to widget that should be used 
                to display this config option
- WidgetArguments - An argument hash passed to the WIdget
+ WidgetArguments - An argument hash passed to the Widget
     Description - Friendly description to show the user
     Values      - Arrayref of options (for select Widget)
     ValuesLabel - Hashref, key is the Value from the Values
@@ -598,7 +598,7 @@ sub _Init {
 
 =head2 InitConfig
 
-Do nothin right now.
+Currently does nothing.
 
 =cut
 
@@ -611,9 +611,8 @@ sub InitConfig {
 
 =head2 LoadConfigs
 
-Load all configs. First of all load RT's config then load
-extensions' config files in alphabetical order.
-Takes no arguments.
+Load all configuration files. RT's config is loaded first, followed by
+extensions' config in alphabetical order. Takes no arguments.
 
 =cut
 
@@ -631,16 +630,16 @@ sub LoadConfigs {
 
 =head1 LoadConfig
 
-Takes param hash with C<File> field.
-First, the site configuration file is loaded, in order to establish
-overall site settings like hostname and name of RT instance.
-Then, the core configuration file is loaded to set fallback values
-for all settings; it bases some values on settings from the site
-configuration file.
+Takes a paramhash with a C<File> field. First, the site configuration file is
+loaded, in order to establish overall site settings like hostname and the name
+of the RT instance. Then, the core configuration file is loaded to set fallback
+values for all settings; it bases some values (such as C<WebBaseURL>) on
+settings from the site configuration file.
 
-B<Note> that core config file don't change options if site config
-has set them so to add value to some option instead of
-overriding you have to copy original value from core config file.
+B<Note> that core config file doesn't change an option if the site config has
+already set it. So to add a value to an option, instead of simply overriding
+(such as C<HomepageComponents>), you have to copy the original value from the
+core config file.
 
 =cut
 
@@ -775,31 +774,55 @@ sub Configs {
 
 =head2 Get
 
-Takes name of the option as argument and returns its current value.
+Takes the name of the option as its argument and returns its current value.
 
 In the case of a user-overridable option, first checks the user's
 preferences before looking for site-wide configuration.
 
-Returns values from RT_SiteConfig, RT_Config and then the %META hash
-of configuration variables's "Default" for this config variable,
-in that order.
+Returns values from F<RT_SiteConfig.pm>, F<RT_Config.pm> and then the C<%META>
+hash of configuration variable's "Default" for this config variable, in that
+order.
 
-Returns different things in scalar and array contexts. For scalar
-options it's not that important, however for arrays and hash it's.
-In scalar context returns references to arrays and hashes.
+This returns different values in scalar and array contexts. For scalar options
+it's not that important, however for options that return arrays and hash,
+context is important. In scalar context, returns references to arrays and
+hashes.
 
-Use C<scalar> perl's op to force context, especially when you use
-C<(..., Argument => RT->Config->Get('ArrayOpt'), ...)>
-as perl's '=>' op doesn't change context of the right hand argument to
-scalar. Instead use C<(..., Argument => scalar RT->Config->Get('ArrayOpt'), ...)>.
+Use Perl's C<scalar> operator to force context, especially when you are
+constructing a hash, like:
 
-It's also important for options that have no default value(no default
+    my %options = (
+        ...,
+        Argument => RT->Config->Get('ArrayOpt'),
+        ...,
+    );
+
+This is broken because Perl's C<< => >> operator doesn't change the context of
+the right-hand side to scalar context. Instead, use:
+
+    my %options = (
+        ...,
+        Argument => scalar RT->Config->Get('ArrayOpt'),
+        ...,
+    );
+
+It's also important for options that have no default value (i.e. not set
 in F<etc/RT_Config.pm>). If you don't force scalar context then you'll
-get empty list and all your named args will be messed up. For example
-C<(arg1 => 1, arg2 => RT->Config->Get('OptionDoesNotExist'), arg3 => 3)>
-will result in C<(arg1 => 1, arg2 => 'arg3', 3)> what is most probably
-unexpected, or C<(arg1 => 1, arg2 => RT->Config->Get('ArrayOption'), arg3 => 3)>
-will result in C<(arg1 => 1, arg2 => 'element of option', 'another_one' => ..., 'arg3', 3)>.
+get the empty list and all your named arguments will be messed up. For example:
+
+    my %options = (
+        Arg1 => 1,
+        Arg2 => RT->Config->Get('OptionDoesNotExist'),
+        Arg3 => 3,
+    );
+
+will result in:
+
+    my %options = (
+        Arg1 => 1,
+        Arg2 => 'Arg3',
+        3    => undef,
+    );
 
 =cut
 
