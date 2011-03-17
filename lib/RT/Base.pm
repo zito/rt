@@ -117,16 +117,16 @@ sub OriginalUser {
 
 =head2 loc LOC_STRING
 
-l is a method which takes a loc string
-to this object's CurrentUser->LanguageHandle for localization. 
+C<loc> is a method which localizes the given string using this object's
+C<< CurrentUser->LanguageHandle >>.
 
-you call it like this:
+You call it like this:
 
     $self->loc("I have [quant,_1,concrete mixer].", 6);
 
-In english, this would return:
-    I have 6 concrete mixers.
+In English, this would return:
 
+    I have 6 concrete mixers.
 
 =cut
 
