@@ -112,6 +112,7 @@ cronjobs
 unsets
 multiparts
 inline
+minify
 
 # RT JARGON
 ACEs

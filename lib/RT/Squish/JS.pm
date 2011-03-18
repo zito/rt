@@ -53,7 +53,7 @@
 
 =head1 DESCRIPTION
 
-This module lets you create squished content of js files.
+This module lets you create squished content of JavaScript files.
 
 =head1 METHODS
 
@@ -67,7 +67,7 @@ use base 'RT::Squish';
 
 =head2 Squish
 
-not only concatenate files, but also minify them
+We not only concatenate files, but also minify them.
 
 =cut
 
