@@ -138,9 +138,9 @@ sub EscapeURI {
 
 =head2 WebCanonicalizeInfo();
 
-Different web servers set different environmental varibles. This
-function must return something suitable for REMOTE_USER. By default,
-just downcase $ENV{'REMOTE_USER'}
+Different web servers set different environmental variables. This
+function must return something suitable for C<REMOTE_USER>. By default,
+just lowercase C<$ENV{'REMOTE_USER'}>.
 
 =cut
 
@@ -305,7 +305,7 @@ sub LoginError {
 
 =head2 SetNextPage [PATH]
 
-Intuits and stashes the next page in the sesssion hash.  If PATH is
+Intuits and stashes the next page in the session hash.  If PATH is
 specified, uses that instead of the value of L<IntuitNextPage()>.  Returns
 the hash value.
 
@@ -326,7 +326,7 @@ sub SetNextPage {
 =head2 TangentForLogin [HASH]
 
 Redirects to C</NoAuth/Login.html>, setting the value of L<IntuitNextPage> as
-the next page.  Optionally takes a hash which is dumped into query params.
+the next page.  Optionally takes a hash which is dumped into query parameters.
 
 =cut
 
@@ -416,8 +416,9 @@ sub MaybeShowInstallModePage {
 
 =head2 MaybeShowNoAuthPage  \%ARGS
 
-This function, called exclusively by RT's autohandler, dispatches
-a request to the page a user requested (but only if it matches the "noauth" regex.
+This function, called exclusively by RT's autohandler, dispatches a request to
+the page a user requested (but only if it matches the configured
+C<WebNoAuthRegex>)
 
 If it serves a page, it stops mason processing. Otherwise, mason just keeps running through the autohandler
 
@@ -451,10 +452,12 @@ sub InitializeMenu {
 =head2 ShowRequestedPage  \%ARGS
 
 This function, called exclusively by RT's autohandler, dispatches
-a request to the page a user requested (making sure that unpriviled users
-can only see self-service pages.
+a request to the page a user requested
 
-=cut 
+We make sure that unprivileged users can only see self-service
+pages.
+
+=cut
 
 sub ShowRequestedPage {
     my $ARGS = shift;
@@ -621,7 +624,7 @@ sub AttemptPasswordAuthentication {
         $m->callback( %$ARGS, CallbackName => 'SuccessfulLogin', CallbackPage => '/autohandler' );
 
         # Really the only time we don't want to redirect here is if we were
-        # passed user and pass as query params in the URL.
+        # passed user and pass as query parameters in the URL.
         if ($next) {
             Redirect($next);
         }
@@ -738,8 +741,8 @@ sub Redirect {
 
 =head2 StaticFileHeaders 
 
-Send the browser a few headers to try to get it to (somewhat agressively)
-cache RT's static Javascript and CSS files.
+Send the browser a few headers to try to get it to (somewhat aggressively)
+cache RT's static JavaScript and CSS files.
 
 This routine could really use _accurate_ heuristics. (XXX TODO)
 
@@ -770,7 +773,7 @@ relative.
 
 This function does not consult the filesystem at all; it is merely
 a logical sanity checking of the path. This explicitly does not handle
-symlinks; if you have symlinks in RT's webroot pointing outside of it,
+symlinks; if you have symlinks in RT's web root pointing outside of it,
 then we assume you know what you are doing.
 
 =cut
@@ -1038,10 +1041,10 @@ sub PageWidgets {
 
 =head2 loc ARRAY
 
-loc is a nice clean global routine which calls $session{'CurrentUser'}->loc()
-with whatever it's called with. If there is no $session{'CurrentUser'}, 
+C<loc> is a nice clean global routine which calls C<< $session{'CurrentUser'}->loc() >>
+with whatever it's called with. If there is no C<< $session{'CurrentUser'} >>,
 it creates a temporary user, so we have something to get a localisation handle
-through
+through.
 
 =cut
 
