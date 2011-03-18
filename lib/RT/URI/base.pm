@@ -57,8 +57,8 @@ RT::URI::base
 
 =head1 DESCRIPTION
 
-A baseclass (and fallback) RT::URI handler. Every URI handler needs to 
-handle the API presented here
+A base class (and fallback) L<RT::URI> handler. Every URI handler needs to
+handle the API presented here.
 
 =cut
 
@@ -132,8 +132,8 @@ Return a "pretty" string representing the URI object.
 
 This is meant to be used like this:
 
- % $re = $uri->Resolver;
- <A HREF="<% $re->HREF %>"><% $re->AsString %></A>
+    % $re = $uri->Resolver;
+    <a href="<% $re->HREF %>"><% $re->AsString %></a>
 
 =cut
 
