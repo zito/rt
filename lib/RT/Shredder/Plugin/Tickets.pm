@@ -72,7 +72,7 @@ Arguments C<queue>, C<status> and C<updated_before> have been dropped
 as you can easy make the same search with the C<query> option.
 See examples above.
 
-=head2 with_linked - boolen
+=head2 with_linked - boolean
 
 Deletes all tickets that are linked to tickets that match L<query>.
 

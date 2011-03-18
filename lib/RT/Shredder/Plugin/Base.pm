@@ -131,13 +131,13 @@ sub HasSupportForArgs
 
 =head3 TestArgs
 
-Takes hash with arguments and thier values and returns true
+Takes a hash with arguments and their values and returns true
 if all values pass testing otherwise returns C<(0, $msg)>.
 
-Stores arguments hash in C<$self->{'opt'}>, you can access this hash
-from C<Run> method.
+Stores arguments hash in C<< $self->{'opt'} >>, you can access this hash
+in the L</Run> method.
 
-Method should be subclassed if plugin support non standard arguments.
+Method should be subclassed if plugin supports non-standard arguments.
 
 =cut
 
@@ -156,19 +156,19 @@ sub TestArgs
 =head3 Run
 
 Takes no arguments.
-Executes plugin and return C<(1, @objs)> on success or
-C<(0, $msg)> if error had happenned.
+Executes plugin and returns C<(1, @objs)> on success or
+C<(0, $msg)> on error.
 
-Method B<must> be subclassed, this class always returns error.
+Method B<must> be subclassed, so this class always returns an error.
 
-Method B<must> be called only after C<TestArgs> method in other
-case values of the arguments are not available.
+Method B<must> be called only after C<TestArgs> method, otherwise
+the values of the arguments are not available.
 
 =cut
 
 sub Run { return (0, "This is abstract plugin, you couldn't use it directly") }
 
-=head2 utils
+=head2 utility methods
 
 =head3 ConvertMaskToSQL
 

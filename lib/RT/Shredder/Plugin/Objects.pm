@@ -60,10 +60,9 @@ RT::Shredder::Plugin::Objects - search plugin for wiping any selected object.
 
 =head1 ARGUMENTS
 
-This plugin searches an RT object you want, so you can use
-the object name as argument and id as value, for example if
-you want select ticket #123 then from CLI you write next
-command:
+This plugin searches for the RT object you want, so you can use
+the object name as the argument and id as the value. For example if
+you want to select ticket #123, you can write:
 
   rt-shredder --plugin 'Objects=Ticket,123'
 
