@@ -156,7 +156,7 @@ and is not recommended to change.
 
 =item Clean up state of RT::Action::SendEmail using 'CleanSlate' method
 
-=item Flush tmp GnuPG key preferences
+=item Flush temporary GnuPG key preferences
 
 =back
 
