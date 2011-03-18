@@ -104,15 +104,16 @@ sub SetResolvers { return 1 }
 
 =head2 FetchNext $collection [, $init]
 
-Returns next object in collection as method L<RT::SearchBuilder/Next>, but
+Returns the next object in the collection, like L<RT::SearchBuilder/Next>, but
 doesn't stop on page boundaries.
 
-When method is called with true C<$init> arg it enables pages on collection
-and selects first page.
+When the method is called with a true C<$init> argument, it enables pages on
+the collection and selects the first page.
 
-Main purpose of this method is to avoid loading of whole collection into
-memory as RT does by default when pager is not used. This method init paging
-on the collection, but doesn't stop when reach page end.
+The main purpose of this method is to avoid loading of whole collection into
+memory, which RT does by default when the pager is not used. This method
+initializes paging on the collection, but doesn't stop when reaching the end of
+a page.
 
 Example:
 
