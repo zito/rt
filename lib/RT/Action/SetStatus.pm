@@ -60,7 +60,7 @@ RT::Action::SetStatus - RT's scrip action to set status of a ticket
 
 This action changes status to a new value according to the rules in L</ARGUMENT>.
 Status is not changed if the transition is invalid or another error occurs. All
-issues are logged at apropriate levels.
+issues are logged at appropriate levels.
 
 =head1 ARGUMENT
 

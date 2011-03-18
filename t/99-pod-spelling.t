@@ -105,6 +105,7 @@ unary
 UTF-8
 reparenting
 RSS
+uninstall
 
 # RT JARGON
 ACEs
@@ -125,6 +126,7 @@ RT's
 Requestor
 requestor
 Requestors
+requestors
 crontool
 lifecycle
 lifecycles

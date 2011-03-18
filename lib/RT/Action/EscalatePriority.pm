@@ -61,7 +61,7 @@ EsclatePriority uses the following formula to change a ticket's priority:
 
     Priority = Priority +  (( FinalPriority - Priority ) / ( DueDate-Today))
 
-Unless the duedate is past, in which case priority gets bumped straight
+Unless the due date is past, in which case priority gets bumped straight
 to final priority.
 
 In this way, priority is either increased or decreased toward the final priority

@@ -75,7 +75,7 @@ Create one or more tickets according to an externally supplied template.
 
 Using the "CreateTickets" ScripAction and mandatory dependencies, RT now has 
 the ability to model complex workflow. When a ticket is created in a queue
-that has a "CreateTickets" scripaction, that ScripAction parses its "Template"
+that has a "CreateTickets" scrip action, that ScripAction parses its "Template"
 
 
 
@@ -176,7 +176,7 @@ A convoluted example
  
 =head2 Acceptable fields
 
-A complete list of acceptable fields for this beastie:
+A complete list of acceptable fields for this action:
 
 
     *  Queue           => Name or id# of a queue
@@ -225,7 +225,7 @@ A complete list of acceptable fields for this beastie:
 Fields marked with an * are required.
 
 Fields marked with a + may have multiple values, simply
-by repeating the fieldname on a new line with an additional value.
+by repeating the field name on a new line with an additional value.
 
 Fields marked with a ! are postponed to be processed after all
 tickets in the same actions are created.  Except for 'Status', those
@@ -234,7 +234,7 @@ the identifiers after ==Create-Ticket), instead of raw Ticket ID
 numbers.
 
 When parsed, field names are converted to lowercase and have -s stripped.
-Refers-To, RefersTo, refersto, refers-to and r-e-f-er-s-tO will all 
+C<Refers-To>, C<RefersTo>, C<refersto>, C<refers-to> and C<r-e-f-er-s-tO> will all 
 be treated as the same thing.
 
 
@@ -560,7 +560,7 @@ sub Parse {
 
 =head2 _ParseMultilineTemplate
 
-Parses mulitline templates. Things like:
+Parses multiline templates. Things like:
 
  ===Create-Ticket ... 
 

@@ -71,7 +71,7 @@ sub Prepare {
 
 =head2 SetRecipients
 
-Sets the recipients of this meesage to Owner, Requestor, AdminCc, Cc or All. 
+Sets the recipients of this message to Owner, Requestor, AdminCc, Cc or All. 
 Explicitly B<does not> notify the creator of the transaction by default
 
 =cut
