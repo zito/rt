@@ -140,7 +140,7 @@ our %MERGE_CACHE = (
 =head2 Load
 
 Takes a single argument. This can be a ticket id, ticket alias or 
-local ticket uri.  If the ticket can't be loaded, returns undef.
+local ticket URI.  If the ticket can't be loaded, returns undef.
 Otherwise, returns the ticket id.
 
 =cut
@@ -211,7 +211,7 @@ Arguments: ARGS is a hash of named parameters.  Valid parameters are:
   MIMEObj -- a MIME::Entity object with the content of the initial ticket request.
   CustomField-<n> -- a scalar or array of values for the customfield with the id <n>
 
-Ticket links can be set up during create by passing the link type as a hask key and
+Ticket links can be set up during create by passing the link type as a hash key and
 the ticket id to be linked to as a value (or a URI when linking to other objects).
 Multiple links of the same type can be created by passing an array ref. For example:
 
@@ -1029,9 +1029,9 @@ Type        One of Requestor, Cc, AdminCc
 PrincipalId The RT::Principal id of the user or group that's being added as a watcher
 
 Email       The email address of the new watcher. If a user with this 
-            email address can't be found, a new nonprivileged user will be created.
+            email address can't be found, a new unprivileged user will be created.
 
-If the watcher you\'re trying to set has an RT account, set the PrincipalId paremeter to their User Id. Otherwise, set the Email parameter to their Email address.
+If the watcher you're trying to set has an RT account, this sets the PrincipalId parameter to their User Id. Otherwise, sets the Email parameter to their Email address.
 
 =cut
 
@@ -1088,7 +1088,7 @@ sub AddWatcher {
 }
 
 #This contains the meat of AddWatcher. but can be called from a routine like
-# Create, which doesn't need the additional acl check
+# Create, which doesn't need the additional ACL check.
 sub _AddWatcher {
     my $self = shift;
     my %args = (
@@ -1171,7 +1171,7 @@ and one of
 
 PrincipalId (an RT::Principal Id of the watcher you want to remove)
     OR
-Email (the email address of an existing wathcer)
+Email (the email address of an existing watcher)
 
 
 =cut
@@ -1467,7 +1467,7 @@ sub AdminCc {
 
 =head2 IsWatcher { Type => TYPE, PrincipalId => PRINCIPAL_ID, Email => EMAIL }
 
-Takes a param hash with the attributes Type and either PrincipalId or Email
+Takes a paramhash with the attributes Type and either PrincipalId or Email
 
 Type is one of Requestor, Cc, AdminCc and Owner
 
@@ -1577,7 +1577,7 @@ sub IsOwner {
     my $self   = shift;
     my $person = shift;
 
-    # no ACL check since this is used in acl decisions
+    # no ACL check since this is used in ACL decisions
     # unless ($self->CurrentUserHasRight('ShowTicket')) {
     #    return(undef);
     #   }    
@@ -1605,7 +1605,7 @@ Returns a composite hashref of the results of L<RT::Transaction/Addresses> for
 all this ticket's Create, Comment or Correspond transactions. The keys are
 stringified email addresses. Each value is an L<Email::Address> object.
 
-NOTE: For performance reasons, this method might want to skip transactions and go straight for attachments. But to make that work right, we're going to need to go and walk around the access control in Attachment.pm's sub _Value.
+NOTE: For performance reasons, this method might want to skip transactions and go straight for attachments. But to make that work right, we're going to need to go and walk around the access control in L<RT::Attachment/_Value>.
 
 =cut
 
@@ -1809,7 +1809,7 @@ sub QueueObj {
 =head2 SubjectTag
 
 Takes nothing. Returns SubjectTag for this ticket. Includes
-queue's subject tag or rtname if that is not set, ticket
+queue's subject tag or the configured C<rtname> if that is not set, ticket
 id and braces, for example:
 
     [support.example.com #123456]
@@ -2271,7 +2271,7 @@ sub DryRun {
 
 =head2 DryRunCreate
 
-Prepares a MIME mesage with the given C<Subject>, C<Cc>, and
+Prepares a MIME message with the given C<Subject>, C<Cc>, and
 C<Content>, then calls L</Create> with C<< DryRun => 1 >> and returns
 the resulting L<RT::Transaction>.
 
@@ -2524,7 +2524,7 @@ sub __GetTicketFromURI {
 
 =head2 _AddLink  
 
-Private non-acled variant of AddLink so that links can be added during create.
+Private non-ACL-checked variant of AddLink so that links can be added during create.
 
 =cut
 
@@ -2947,7 +2947,7 @@ sub SetOwner {
                       Value             => $NewOwnerObj->Id,
                       TimeTaken         => 0,
                       TransactionType   => 'Set',
-                      CheckACL          => 0,                  # don't check acl
+                      CheckACL          => 0,                  # don't check ACL
     );
 
     unless ($val) {
@@ -2981,7 +2981,7 @@ sub SetOwner {
 
 =head2 Take
 
-A convenince method to set the ticket's owner to the current user
+A convenience method to set the ticket's owner to the current user
 
 =cut
 
@@ -3187,7 +3187,7 @@ sub SetTold {
 
 =head2 _SetTold
 
-Updates the told without a transaction or acl check. Useful when we're sending replies.
+Updates the told without a transaction or ACL check. Useful when we're sending replies.
 
 =cut
 
@@ -3244,8 +3244,9 @@ sub TransactionBatch {
 
 =head2 ApplyTransactionBatch
 
-Applies scrips on the current batch of transactions and shinks it. Usually
-batch is applied when object is destroyed, but in some cases it's too late.
+Executes scrips on the current batch of transactions, and clears the batched
+scrips. Usually the batch is applied when the object is L</DESTROY>ed, but in some
+cases that is too late.
 
 =cut
 
@@ -3440,8 +3441,8 @@ sub _Value {
 
 =head2 _UpdateTimeTaken
 
-This routine will increment the timeworked counter. it should
-only be called from _NewTransaction 
+This routine will increment the TimeWorked counter. It should
+only be called from L</_NewTransaction>.
 
 =cut
 
@@ -3520,8 +3521,9 @@ sub HasRight {
 
 =head2 Reminders
 
-Return the Reminders object for this ticket. (It's an RT::Reminders object.)
-It isn't acutally a searchbuilder collection itself.
+Return the L<RT::Reminders> object for this ticket.
+
+It isn't actually a L<DBIx::SearchBuilder> collection.
 
 =cut
 
