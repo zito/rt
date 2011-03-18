@@ -149,8 +149,8 @@ sub GetQueryAndOptionList {
 
 =head2 PruneChildLessAggregators
 
-If tree manipulation has left it in a state where there are ANDs, ORs,
-or parenthesizations with no children, get rid of them.
+If tree manipulation has left it in a state where there are C<AND>s, C<OR>s,
+or parenthesized groups with no children, prune them.
 
 =cut
 
