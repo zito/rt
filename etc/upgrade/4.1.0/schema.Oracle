@@ -1,0 +1,12 @@
+# these indexes should be unique
+DROP INDEX Queues1;
+CREATE UNIQUE INDEX Queues1 ON Queues (LOWER(Name));
+
+DROP INDEX Users2;
+CREATE UNIQUE INDEX Users2 ON Users( LOWER(Name));
+
+# no sense in Queues(Disabled) index
+DROP INDEX Queues2;
+
+# it's just prefix for DisGrouMem
+DROP INDEX GrouMem;

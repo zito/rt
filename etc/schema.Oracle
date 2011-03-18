@@ -38,8 +38,7 @@ CREATE TABLE Queues (
 	LastUpdated		DATE,
 	Disabled 		NUMBER(11,0) DEFAULT 0 NOT NULL
 );
- CREATE  INDEX Queues1 ON Queues (LOWER(Name));
-CREATE INDEX Queues2 ON Queues (Disabled);
+CREATE UNIQUE INDEX Queues1 ON Queues (LOWER(Name));
 
 
 CREATE SEQUENCE LINKS_seq;
@@ -193,7 +192,6 @@ CREATE TABLE CachedGroupMembers (
 	Disabled	NUMBER(11,0) DEFAULT 0 NOT NULL
 );
 CREATE INDEX DisGrouMem ON CachedGroupMembers (GroupId, MemberId, Disabled);
-CREATE INDEX GrouMem ON CachedGroupMembers (GroupId, MemberId);
 CREATE INDEX CachedGroupMembers3 on CachedGroupMembers (MemberId, ImmediateParentId);
 
 
@@ -237,9 +235,7 @@ CREATE TABLE Users (
   	LastUpdatedBy 		NUMBER(11,0) DEFAULT 0 NOT NULL,
   	LastUpdated 		DATE
 );
--- CREATE UNIQUE INDEX Users1 ON Users (Name);
-
-CREATE INDEX Users2 ON Users( LOWER(Name));
+CREATE UNIQUE INDEX Users2 ON Users( LOWER(Name));
 CREATE INDEX Users4 ON Users (LOWER(EmailAddress));
 
 
