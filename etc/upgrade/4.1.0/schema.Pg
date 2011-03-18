@@ -1,0 +1,16 @@
+# make indexes case insensetive
+DROP INDEX Queues1;
+CREATE UNIQUE INDEX Queues1 ON Queues (lower(Name));
+
+DROP INDEX Users1;
+CREATE UNIQUE INDEX Users1 ON Users (lower(Name));
+
+DROP INDEX Users4;
+CREATE INDEX Users4 ON Users (lower(EmailAddress));
+
+# redundant indexes (id, xxx, ...)
+DROP INDEX Users3;
+DROP INDEX Tickets4;
+DROP INDEX Tickets5;
+
+CREATE INDEX Tickets4 ON Tickets (lower(Status));

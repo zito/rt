@@ -63,7 +63,7 @@ CREATE TABLE Queues (
   PRIMARY KEY (id)
 
 );
-CREATE UNIQUE INDEX Queues1 ON Queues (Name) ;
+CREATE UNIQUE INDEX Queues1 ON Queues (lower(Name));
 
 
 
@@ -378,9 +378,8 @@ CREATE TABLE Users (
 );
 
 
-CREATE UNIQUE INDEX Users1 ON Users (Name) ;
-CREATE INDEX Users3 ON Users (id, EmailAddress);
-CREATE INDEX Users4 ON Users (EmailAddress);
+CREATE UNIQUE INDEX Users1 ON Users (lower(Name));
+CREATE INDEX Users4 ON Users (lower(EmailAddress));
 
 
 
@@ -430,9 +429,7 @@ CREATE TABLE Tickets (
 CREATE INDEX Tickets1 ON Tickets (Queue, Status) ;
 CREATE INDEX Tickets2 ON Tickets (Owner) ;
 CREATE INDEX Tickets3 ON Tickets (EffectiveId) ;
-CREATE INDEX Tickets4 ON Tickets (id, Status) ;
-CREATE INDEX Tickets5 ON Tickets (id, EffectiveId) ;
-
+CREATE INDEX Tickets4 ON Tickets (lower(Status));
 
 
 
