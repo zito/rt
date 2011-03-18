@@ -106,6 +106,12 @@ UTF-8
 reparenting
 RSS
 uninstall
+PGP
+SHA
+cronjobs
+unsets
+multiparts
+inline
 
 # RT JARGON
 ACEs
@@ -140,3 +146,4 @@ formatters
 lookup
 wipeout
 RTx
+autoreplies

@@ -71,11 +71,11 @@ You can control the configuration of this subsystem from RT's configuration file
 Some options are available via the web interface, but to enable this functionality, you
 MUST start in the configuration file.
 
-There are two hashes, GnuPG and GnuPGOptions in the configuration file. The 
+There are two hashes, GnuPG and GnuPGOptions in the configuration file. The
 first one controls RT specific options. It enables you to enable/disable facility 
-or change the format of messages. The second one is a hash with options for the 
-'gnupg' utility. You can use it to define a keyserver, enable auto-retrieval keys 
-and set almost any option 'gnupg' supports on your system.
+or change the format of messages. The second one is a hash with options for the
+C<gpg> utility. You can use it to define a keyserver, enable auto-retrieval keys
+and set almost any option C<gpg> supports on your system.
 
 =head2 %GnuPG
 
@@ -114,23 +114,23 @@ This framework implements two formats of signing and encrypting of email message
 
 =over
 
-=item RFC
+=item C<RFC>
 
 This format is also known as GPG/MIME and described in RFC3156 and RFC1847.
 Technique described in these RFCs is well supported by many mail user
 agents (MUA), but some MUAs support only inline signatures and encryption,
 so it's possible to use inline format (see below).
 
-=item Inline
+=item C<Inline>
 
 This format doesn't take advantage of MIME, but some mail clients do
 not support GPG/MIME.
 
 We sign text parts using clear signatures. For each attachments another
-attachment with a signature is added with '.sig' extension.
+attachment with a signature is added with F<.sig> extension.
 
 Encryption of text parts is implemented using inline format, other parts
-are replaced with attachments with the filename extension '.pgp'.
+are replaced with attachments with the filename extension F<.pgp>.
 
 This format is discouraged because modern mail clients typically don't support
 it well.
@@ -144,12 +144,12 @@ option C<AllowEncryptDataInDB>. By default it's disabled.
 Users must have rights to see and modify tickets to use
 this feature.
 
-=head2 %GnuPGOptions
+=head2 C<%GnuPGOptions>
 
-Use this hash to set options of the 'gnupg' program. You can define almost any
-option you want which  gnupg supports, but never try to set options which
-change output format or gnupg's commands, such as --sign (command),
---list-options (option) and other.
+Use this hash to set options of the C<gpg> program. You can define almost any
+option you want which  C<gpg> supports, but never set options which
+change the output format of C<gpg>'s commands, such as C<--sign> (command),
+C<--list-options> (option) and other.
 
 Some GnuPG options take arguments while others take none. (Such as  --use-agent).
 For options without specific value use C<undef> as hash value.
@@ -162,44 +162,45 @@ To disable these option just comment them out or delete them from the hash
     );
 
 B<NOTE> that options may contain '-' character and such options B<MUST> be
-quoted, otherwise you can see quite cryptic error 'gpg: Invalid option "--0"'.
+quoted, otherwise you can see a cryptic error like C<gpg: Invalid option "--0">.
 
 =over
 
-=item --homedir
+=item C<--homedir>
 
 The GnuPG home directory, by default it is set to F</opt/rt4/var/data/gpg>.
 
-You can manage this data with the 'gpg' commandline utility 
-using the GNUPGHOME environment variable or --homedir option. 
+You can manage this data with the C<gpg> command-line utility
+using the C<GNUPGHOME> environment variable or C<--homedir> option.
 Other utilities may be used as well.
 
 In a standard installation, access to this directory should be granted to
 the web server user which is running RT's web interface, but if you're running
 cronjobs or other utilities that access RT directly via API and may generate
 encrypted/signed notifications then the users you execute these scripts under
-must have access too. 
+must have access too.
 
-However, granting access to the dir to many users makes your setup less secure,
+However, granting access to the directory to many users makes your setup less secure,
 some features, such as auto-import of keys, may not be available if you do not.
 To enable this features and suppress warnings about permissions on
-the dir use --no-permission-warning.
+the directory use C<--no-permission-warning>.
 
-=item --digest-algo
+=item C<--digest-algo>
 
-This option is required in advance when RFC format for outgoing messages is
-used. We can not get default algorithm from gpg program so RT uses 'SHA1' by
-default. You may want to override it. You can use MD5, SHA1, RIPEMD160,
-SHA256 or other, however use `gpg --version` command to get information about
-supported algorithms by your gpg. These algorithms are listed as hash-functions.
+This option is required when the RFC format for outgoing messages is used. We
+cannot get the default algorithm from C<gpg> program, so RT uses C<SHA1> by
+default. You may want to override it. You can use C<MD5>, C<SHA1>,
+C<RIPEMD160>, C<SHA256> and others, however use the C<gpg --version> command to
+get information about algorithms supported by your C<gpg>. These algorithms are
+listed under "hash-functions".
 
-=item --use-agent
+=item C<--use-agent>
 
 This option lets you use GPG Agent to cache the passphrase of RT's key. See
 L<http://www.gnupg.org/documentation/manuals/gnupg/Invoking-GPG_002dAGENT.html>
 for information about GPG Agent.
 
-=item --passphrase
+=item C<--passphrase>
 
 This option lets you set the passphrase of RT's key directly. This option is
 special in that it isn't passed directly to GPG, but is put into a file that
@@ -209,7 +210,7 @@ the --use-agent option instead.
 
 =item other
 
-Read `man gpg` to get list of all options this program support.
+Read C<man gpg> to get a list of all the options this program supports.
 
 =back
 
@@ -220,9 +221,9 @@ default. As an administrative user of RT, open 'Configuration' then 'Queues',
 and select a queue. On the page you can see information about the queue's keys 
 at the bottom and two checkboxes to choose default actions.
 
-As well, encryption is enabled for autoreplies and other notifications when
-an encypted message enters system via mailgate interface even if queue's
-option is disabled.
+Also, encryption is enabled for autoreplies and other notifications when an
+encrypted message enters the system via the mailgate interface even if the
+queue's option is disabled.
 
 =head2 Handling incoming messages
 
@@ -231,9 +232,9 @@ To enable handling of encrypted and signed message in the RT you should add
 
     Set(@MailPlugins, 'Auth::MailFrom', 'Auth::GnuPG', ...other filter...);
 
-See also `perldoc lib/RT/Interface/Email/Auth/GnuPG.pm`.
+See also L<RT::Interface::Email::Auth::GnuPG>.
 
-=head2 Errors handling
+=head2 Error handling
 
 There are several global templates created in the database by default. RT
 uses these templates to send error messages to users or RT's owner. These 
@@ -256,10 +257,33 @@ his public key and won't be able to send him encrypted content. There are severa
 reasons why RT can't use a key. However, the actual reason is not sent to the user, 
 but sent to RT owner using 'Error to RT owner: public key'.
 
-The possible reasons: "Not Found", "Ambiguous specification", "Wrong
-key usage", "Key revoked", "Key expired", "No CRL known", "CRL too
-old", "Policy mismatch", "Not a secret key", "Key not trusted" or
-"No specific reason given".
+The possible reasons:
+
+=over 4
+
+=item C<Not Found>
+
+=item C<Ambiguous specification>
+
+=item C<Wrong key usage>
+
+=item C<Key revoked>
+
+=item C<Key expired>
+
+=item C<No CRL known>
+
+=item C<CRL too old>
+
+=item C<Policy mismatch>
+
+=item C<Not a secret key>
+
+=item C<Key not trusted>
+
+=item C<No specific reason given>
+
+=back
 
 Due to limitations of GnuPG, it's impossible to encrypt to an untrusted key,
 unless 'always trust' mode is enabled.
@@ -314,12 +338,18 @@ of error messages.
 
 =head2 Documentation and references
 
-* RFC1847 - Security Multiparts for MIME: Multipart/Signed and Multipart/Encrypted.
+=over 4
+
+=item RFC1847 - Security Multiparts for MIME: Multipart/Signed and Multipart/Encrypted.
+
 Describes generic MIME security framework, "mulitpart/signed" and "multipart/encrypted"
 MIME types.
 
-* RFC3156 - MIME Security with Pretty Good Privacy (PGP),
-updates RFC2015.
+=item RFC3156 - MIME Security with Pretty Good Privacy (PGP)
+
+Updates RFC2015.
+
+=back
 
 =cut
 
@@ -371,7 +401,7 @@ Signs and/or encrypts an email message with GnuPG utility.
 =item Signing
 
 During signing you can pass C<Signer> argument to set key we sign with this option
-overrides gnupg's C<default-key> option. If C<Signer> argument is not provided
+overrides C<gpg>'s C<default-key> option. If C<Signer> argument is not provided
 then address of a message sender is used.
 
 As well you can pass C<Passphrase>, but if value is undefined then L</GetPassphrase>
@@ -1572,9 +1602,9 @@ sub GetPassphrase {
 
 =head2 ParseStatus
 
-Takes a string containing output of gnupg status stream. Parses it and returns
-array of hashes. Each element of array is a hash ref and represents line or
-group of lines in the status message.
+Takes a string containing the output of a GnuPG status stream. Parses it and
+returns an array of hashes. Each hash ref represents a line or a group of lines
+in the status message.
 
 All hashes have Operation, Status and Message elements.
 
@@ -1582,7 +1612,7 @@ All hashes have Operation, Status and Message elements.
 
 =item Operation
 
-Classification of operations gnupg performs. Now we have support
+Classification of operations GnuPG performs. Now we have support
 for Sign, Encrypt, Decrypt, Verify, PassphraseCheck, RecipientsCheck and Data
 values.
 
@@ -1941,7 +1971,7 @@ Returns or sets identifier of the key that should be used for signing.
 
 Returns the current value when called without arguments.
 
-Sets new value when called with one argument and unsets if it's undef.
+Sets new value when called with one argument and unsets if it's C<undef>.
 
 =cut
 
@@ -2363,11 +2393,11 @@ sub ImportKey {
     return %res;
 }
 
-=head2 KEY
+=head2 DrySign
 
 Signs a small message with the key, to make sure the key exists and 
-we have a useable passphrase. The first argument MUST be a key identifier
-of the signer: either email address, key id or finger print.
+we have a usable passphrase. The first argument MUST be the key identifier
+of the signer: email address, key id, or finger print.
 
 Returns a true value if all went well.
 
