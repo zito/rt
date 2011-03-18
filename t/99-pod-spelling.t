@@ -29,6 +29,7 @@ one's
 multi
 depluralization
 auditability
+pre-existing
 
 # PROGRAMMING JARGON
 API
@@ -97,6 +98,10 @@ denormalizes
 canonicalizes
 reinitializes
 codepath
+codebase
+add-ons
+subcomponents
+unary
 
 # RT JARGON
 ACEs
@@ -129,3 +134,4 @@ formatter
 formatters
 lookup
 wipeout
+RTx

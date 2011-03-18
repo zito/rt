@@ -16,7 +16,7 @@ degree to any Perl code written for use in RT.
 
 Note that these are all guidelines, not unbreakable rules.  If you have
 a really good need to break one of the rules herein, however, then it is
-best to ask on the B<rt-devel> mailing list first.
+best to ask on the C<rt-devel> mailing list first.
 
 Note that with much of this document, it is not so much the Right Way as
 it is Our Way.  We need to have conventions in order to make life easier
@@ -24,13 +24,13 @@ for everyone.  So don't gripe, and just follow it, because you didn't
 get a good grade in "Plays Well With Others" in kindergarten and you
 want to make up for it now.
 
-If you have any questions, please ask us on the B<rt-devel> mailing list:
+If you have any questions, please ask us on the C<rt-devel> mailing list:
 
 	http://www.bestpractical.com/rt/lists.html
 
-We don't always follow this guide.  We are making changes throughout
-our code to be in line with it.  But just because we didn't do
-it yet, that is no excuse.  Do it anyway.  :-)
+We don't always follow this guide.  We are making changes throughout our ten
+year old codebase to better line up with it.  But just because we didn't do it
+yet, that is no excuse.  Do it anyway.  :-)
 
 This document is subject to change at the whims of the core RT team.
 We hope to add any significant changes at the bottom of the document.
@@ -40,7 +40,7 @@ We hope to add any significant changes at the bottom of the document.
 
 =head2 Perl Version
 
-We code everything to perl 5.8.3 or higher.  Complete unicode support
+We code everything to Perl 5.8.3 or higher.  Complete unicode support
 requires bugfixes found in 5.8.3.
 
 =head2 Documentation
@@ -128,10 +128,10 @@ commenting.  Good stuff, Maynard.
 
 =head2 Warnings and Strict
 
-All code must compile and run cleanly with "use strict" enabled and the
-perl "-w" (warnings) option on.  If you must do something that -w or
-strict complains about, there are workarounds, but the chances that you
-really need to do it that way are remote.
+All code must compile and run cleanly with "use strict" and "use
+warnings" enabled. If you must do something that warnings or strict
+complains about, there are workarounds, but the chances that you really
+need to do it that way are remote.
 
 =head2 Lexical Variables
 
@@ -156,8 +156,9 @@ is seldom a need to do it, and you shouldn't.
 
 Do not export anything from a module by default.  Feel free to put
 anything you want to in @EXPORT_OK, so users of your modules can
-explicitly ask for symbols (e.g., "use Something::Something qw(getFoo
-setFoo)"), but do not export them by default.
+explicitly ask for symbols (e.g.,
+C<use Something::Something qw(getFoo setFoo)>), but do not export them by
+default.
 
 
 =head2 Pass by Reference
@@ -182,7 +183,7 @@ Although, usually, this is better (faster, easier to read, etc.):
 		return($user, $form);
 	}
 
-We need to talk about Class::ReturnValue here.
+TODO: We need to talk about Class::ReturnValue here.
 
 
 =head2 Garbage Collection
@@ -257,13 +258,13 @@ You may specify defaults to those named parameters instead of using
 C<undef> above, as long as it is documented as such.
 
 It is worth noting that the existing RT codebase had not followed this
-style perfectly; we are trying to fix it without breaking exsiting APIs.
+style perfectly; we are trying to fix it without breaking existing APIs.
 
 =head2 Tests
 
 Modules should provide test code, with documentation on how to use
-it.  Test::More makes it easy to create tests. Any code you write
-should have a testsuite.  Any code you alter should have a test
+it.  L<Test::More> makes it easy to create tests. Any code you write
+should have a test suite.  Any code you alter should have a test
 suite. If a patch comes in without tests, there is something wrong.
 
 When altering code, you must run the test harness before submitting a
@@ -281,22 +282,22 @@ There are several different levels ($RT::Logger methods) of logging:
 
 =over 4
 
-=item debug
+=item C<debug>
 
 Used for messages only needed during system debugging.
 
-=item info
+=item C<info>
 
 Should be used to describe "system-critical" events which aren't errors.
 Examples: creating users, deleting users, creating tickets, creating queues,
-sending email (message id, time, recipients), recieving mail, changing
+sending email (message id, time, recipients), receiving mail, changing
 passwords, changing access control, superuser logins)
 
-=item error
+=item C<error>
 
 Used for RT-generated failures during execution.
 
-=item crit
+=item C<crit>
 
 Should be used for messages when an action can not be completed due to some
 error condition beyond our control.
@@ -324,7 +325,7 @@ just calling $RT::Logger->warning(), when the return value is not what you'd exp
 
 =head1 STYLE
 
-Much of the style section is taken from the perlsyle manpage.  We make
+Much of the style section is taken from the L<perlstyle> manpage.  We make
 some changes to it here, but it wouldn't be a bad idea to read that
 document, too.
 
@@ -337,7 +338,7 @@ document, too.
 "RT" is the name of the project.  "RT" is, optionally, the
 specific name for the actual file distribution.  That's it. 
 
-While we sometimes use "RT2" or "RT3", that's shortand that's really
+While we sometimes use "RT2" or "RT3", that's shorthand that's really
 not recommended. The name of the project is "RT".
 
 To specify a major version, use "RT 3.0".
@@ -349,10 +350,10 @@ Just because it is the Perl Way (not necessarily right for all
 languages, but the documented terminology in the perl documentation),
 "method" should be used only to refer to a subroutine that are object
 methods or class methods; that is, these are functions that are used
-with OOP that always take either an object or a class as the first
-argument. Regular subroutines, ones that are not object or class
-methods, are functions.  Class methods that create and return an object
-are optionally called constructors.
+with object-oriented programming that always take either an object or a class
+as the first argument. Regular subroutines, ones that are not object or class
+methods, are functions.  Class methods that create and return an object are
+optionally called constructors.
 
 =item Users
 
@@ -416,7 +417,7 @@ Accessors which return an object should end with the suffix Obj.
 This section needs clarification for RT.
 
 Words begin with a capital letter.  They
-should as clearly as possible describe the activity to be peformed, and
+should as clearly as possible describe the activity to be performed, and
 the data to be returned. 
 
 
@@ -469,7 +470,7 @@ of the plugin.
 Use perltidy. Anything we say here is wrong if it conflicts with what
 perltidy does. Your perltidyrc should read:
 
--lp -vt=2 -vtc=2 -nsfs -bar                                                                                             
+    -lp -vt=2 -vtc=2 -nsfs -bar
 
 =head2 Indents and Blank Space
 
@@ -597,7 +598,7 @@ parentheses.  Remember the words of Larry Wall in the perlstyle manpage:
 	of the person who has to maintain the code after you, and
 	who will probably put parens in the wrong place.
 
-So leave them out when it is absoutely clear to a programmer, but if
+So leave them out when it is absolutely clear to a programmer, but if
 there is any question, leave them in.
 
 
@@ -605,7 +606,7 @@ there is any question, leave them in.
 
 (This is about control braces, not hash/data structure braces.)
 
-There is always a space befor the opening brace.
+There is always a space before the opening brace.
 
 	while (<$fh>){	# wrong
 	while (<$fh>) {	# right
@@ -624,7 +625,7 @@ keyword at the end.
 		smell();
 	}
 
-Generally, we prefer "uncuddled elses":
+Generally, we prefer the "uncuddled else" style:
 
 	if ($foo) {
 		print;
@@ -645,7 +646,7 @@ _If_ the if statement is very brief, sometimes "cuddling" the else makes code mo
 =head2 Operators
 
 Put space around most operators.  The primary exception is the for
-aesthetics; e.g., sometimes the space around "**" is ommitted,
+aesthetics; e.g., sometimes the space around "**" is omitted,
 and there is never a space before a ",", but always after.
 
 	print $x , $y;	# wrong
@@ -734,91 +735,124 @@ as needed.
 
 =head1 INTERNATIONALIZATION
 
+=head2 Background
 
-=head2 String extraction styleguide
+L<Locale::Maketext::TPJ13> is an excellent article which explains the system RT
+uses for internationalization and ought to be read by everyone who writes
+software.
+
+=head2 String extraction style guide
 
 =over 4
 
 =item Web templates
 
-Templates should use the /l filtering component to call the localisation
-framework
+Templates should use the C</l> filtering component to call the localisation
+framework.
 
-The string 		Foo!
+The string
 
-Should become		<&|/l&>Foo!</&>
+    Foo!
 
-All newlines should be removed from localized strings, to make it easy to 
+Should become
+
+    <&|/l&>Foo!</&>
+
+All newlines should be removed from localized strings, to make it easy to
 grep the codebase for strings to be localized
 
-The string 		Foo
-			Bar
-			Baz
-			
-Should become		<&|/l&>Foo Bar Baz</&>
+The string
 
+    Foo
+    Bar
+    Baz
 
-Variable subsititutions should be moved to Locale::MakeText format
+Should become
 
-The string		Hello, <%$name %>
+    <&|/l&>Foo Bar Baz</&>
 
-should become		<&|/l, $name &>Hello, [_1]</&>	
+Variable interpolations must use the L<Locale::MakeText> format.
 
+The string
 
-Multiple variables work just like single variables
- 
-The string		You found <%$num%> tickets in queue <%$queue%>
+    Hello, <%$name %>
 
-should become		<&|/l, $num, $queue &>You found [_1] tickets in queue [_2]</&>
+should become
+
+    <&|/l, $name &>Hello, [_1]</&>
+
+Multiple variables work just like single variables.
+
+The string
+
+    You found <%$num%> tickets in queue <%$queue%>
+
+should become
+
+    <&|/l, $num, $queue &>You found [_1] tickets in queue [_2]</&>
 
 When subcomponents are called in the middle of a phrase, they need to be escaped
 too:
 
-The string		 <input type="submit" value="New ticket in">&nbsp<& /Elements/SelectNewTicketQueue&>
+The string
 
-should become		<&|/l, $m->scomp('/Elements/SelectNewTicketQueue')&><input type="submit" value="New ticket in">&nbsp;[_1]</&>
+    <input type="submit" value="New ticket in">&nbsp<& /Elements/SelectNewTicketQueue&>
 
+should become
 
+    <&|/l, $m->scomp('/Elements/SelectNewTicketQueue')&><input type="submit" value="New ticket in">&nbsp;[_1]</&>
 
+The string
 
-The string	<& /Elements/TitleBoxStart, width=> "40%", titleright => "RT $RT::VERSION for   RT->Config->Get('rtname')", title => 'Login' &>
+    <& /Elements/TitleBoxStart,
+        width      => "40%",
+        titleright => "RT $RT::VERSION for RT->Config->Get('rtname')",
+        title      => 'Login',
+    &>
 
-should become 	<& /Elements/TitleBoxStart, 
-			width=> "40%",
-			titleright => loc("RT [_1] for [_2]",$RT::VERSION, RT->Config->Get('rtname')),
-			title => loc('Login'),
-	      	&>
-	
+should become
+
+    <& /Elements/TitleBoxStart, 
+        width      => "40%",
+        titleright => loc("RT [_1] for [_2]", $RT::VERSION, RT->Config->Get('rtname')),
+        title      => loc('Login'),
+    &>
 
 =item Library code			
 
+Within RT's core code, every module has a localization handle available through the C<loc> method:
 
+The code
 
-Within RT's core code, every module has a localization handle available through the 'loc' method:
+    return ( $id, "Queue created" );
 
-The code 	return ( $id, "Queue created" );
+should become
 
-should become 	return ( $id, $self->loc("Queue created") );	
+    return ( $id, $self->loc("Queue created") );	
 
 When returning or localizing a single string, the "extra" set of parenthesis () should be omitted.
 
-The code  	return ("Subject changed to ". $self->Data );
+The code
 
-should become	 return $self->loc( "Subject changed to [_1]", $self->Data );
+    return ("Subject changed to ". $self->Data );
+
+should become
+
+    return $self->loc( "Subject changed to [_1]", $self->Data );
 
 
-It is important not to localize  the names of rights or statuses within RT's core, as there is logic that depends on them as string identifiers.  The proper place to localize these values is when they're presented for display in the web or commandline interfaces.
+It is important not to localize  the names of rights or statuses within RT's core, as there is logic that depends on them as string identifiers.  The proper place to localize these values is when they're presented for display in the web or command-line interfaces.
 
 
 =back
 
-=head1 CODING PRCEDURE
+=head1 CODING PROCEDURE
 
 This is for new programs, modules, specific APIs, or anything else.
 
 =over 4
 
-=item Present idea to rt-devel
+=item Present idea to C<rt-devel>
 
 We may know of a better way to approach the problem, or know of an
 existing way to deal with it, or know someone else is working on it. 
@@ -826,11 +860,11 @@ This is mostly informal, but a fairly complete explanation for the need
 and use of the code should be provided.
 
 
-=item Present complete specs to rt-devel
+=item Present complete specs to C<rt-devel>
 
 The complete proposed API  should be submitted for
 approval and discussion.  For web and command-line programs, present the
-functionality and interface (op codes, command-lin switches, etc.).
+functionality and interface (op codes, command-line switches, etc.).
 
 The best way to do this is to take the documentation portion of the
 boilerplate and fill it in.  You can make changes later if necessary,
@@ -862,12 +896,12 @@ if you do not have repository access, submit it to rt-<major-version>-bugs@fsck.
 
 =head1 BUG REPORTS, PATCHES
 
-Use rt-<major-version>-bugs@fsck.com for I<any> bug that is not
+Use C<rt-bugs@bestpractical.com> for I<any> bug that is not
 being fixed immediately.  If it is not in RT, there
 is a good chance it will not be dealt with.
 
-Send patches to rt-<major-version>-bugs@fsck.com, too.  Use C<diff
--u> for patches.
+Send patches to C<rt-bugs@bestpractical.com>, too.  Use C<diff -u>
+(or better yet, C<git format-patch>) for patches.
 
 =head1 SCHEMA DESIGN
 
@@ -895,7 +929,7 @@ but new tables are expected to be consistent.
 
 =head1 EXTENDING RT CLASSES
 
-=head2 The Overlay mechansim
+=head2 The Overlay mechanism
 
 RT's classes allow "overlay" methods to be placed into files named Filename_Vendor.pm and Filename_Local.pm
 _Vendor is for 3rd-party vendor add-ons, while _Local is for site-local customizations.
