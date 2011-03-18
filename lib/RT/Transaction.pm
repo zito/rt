@@ -239,7 +239,7 @@ sub Rules {
 
 =head2 Delete
 
-Delete this transaction. Currently DOES NOT CHECK ACLS
+Delete this transaction. B<Currently does not check ACLs!>
 
 =cut
 
@@ -1048,9 +1048,9 @@ sub CurrentUserHasRight {
 
 Returns true if current user has rights to see this particular transaction.
 
-This fact depends on type of the transaction, type of an object the transaction
-is attached to and may be other conditions, so this method is prefered over
-custom implementations.
+This fact depends on the type of the transaction, the type of the object that
+the transaction is attached to and maybe other conditions, so this method is
+preferred over custom implementations.
 
 =cut
 
@@ -1291,7 +1291,7 @@ Takes the following arguments:
 
 =over
 
-=item * a string to indicate the frequency of digest delivery.  Valid values are "daily", "weekly", or "susp".
+=item * a string to indicate the frequency of digest delivery.  Valid values are "C<daily>", "C<weekly>", or "C<susp>".
 
 =item * an optional argument which, if true, will return addresses even if this notification has been marked as 'sent' for this transaction.
 

@@ -103,6 +103,7 @@ add-ons
 subcomponents
 unary
 UTF-8
+reparenting
 
 # RT JARGON
 ACEs
