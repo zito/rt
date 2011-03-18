@@ -289,10 +289,10 @@ sub ValidatePassword {
 
 =head2 SetPrivileged BOOL
 
-If passed a true value, makes this user a member of the "Privileged"  PseudoGroup.
-Otherwise, makes this user a member of the "Unprivileged" pseudogroup.
+If passed a true value, makes this user a member of the "Privileged" group.
+Otherwise, makes this user a member of the "Unprivileged" group.
 
-Returns a standard RT tuple of (val, msg);
+Returns a standard RT tuple of (value, message);
 
 
 =cut
@@ -599,17 +599,27 @@ user preferences.
 
 =over 4
 
-=item 'no email' - user has no email, so can not recieve notifications.
+=item 'no email'
 
-=item 'squelched' - returned only when Ticket argument is provided and
-notifications to the user has been supressed for this ticket.
+user has no email, so can not receive notifications.
 
-=item 'daily' - retruned when user recieve daily messages digest instead
-of immediate delivery.
+=item 'squelched'
 
-=item 'weekly' - previous, but weekly.
+returned only when Ticket argument is provided and notifications to the user
+has been suppressed for this ticket.
 
-=item empty string returned otherwise.
+=item 'daily'
+
+returned when user receives daily messages digest instead of immediate
+delivery.
+
+=item 'weekly'
+
+same as the previous, but weekly.
+
+=item otherwise
+
+the empty string is returned otherwise.
 
 =back
 
@@ -658,12 +668,13 @@ sub CanonicalizeEmailAddress {
 
 =head2 CanonicalizeUserInfo HASH of ARGS
 
-CanonicalizeUserInfo can convert all User->Create options.
-it takes a hashref of all the params sent to User->Create and
-returns that same hash, by default nothing is done.
+CanonicalizeUserInfo can convert all L</Create> options.
+It takes a hashref of all the parameters sent to L</Create> and
+returns success or failure.
 
-This function is intended to allow users to have their info looked up via
-an outside source and modified upon creation.
+By default the hashref of arguments is not modified at all. This function is
+intended to allow users to have their info looked up via an outside source and
+modified upon creation.
 
 =cut
 
@@ -714,7 +725,7 @@ sub SetRandomPassword {
 =head3 ResetPassword
 
 Returns status, [ERROR or new password].  Resets this user's password to
-a randomly generated pronouncable password and emails them, using a
+a randomly generated pronounceable password and emails them, using a
 global template called "RT_PasswordChange", which can be overridden
 with global templates "RT_PasswordChange_Privileged" or "RT_PasswordChange_NonPrivileged"
 for privileged and Non-privileged users respectively.
@@ -971,10 +982,9 @@ sub CurrentUserRequireToSetPassword {
 
 =head3 AuthToken
 
-Returns an authentication string associated with the user. This
-string can be used to generate passwordless URLs to integrate
-RT with services and programms like callendar managers, rss
-readers and other.
+Returns an authentication string associated with the user. This string can be
+used to generate password-less URLs to integrate RT with services and programs
+like calendar applications, RSS readers, and so on.
 
 =cut
 
@@ -1026,8 +1036,9 @@ sub GenerateAuthString {
 
 =head3 ValidateAuthString
 
-Takes auth string and protected string. Returns true is protected string
-has been protected by user's L</AuthToken>. See also L</GenerateAuthString>.
+Takes an authentication string and protected string. Returns true is protected
+string has been protected by user's L</AuthToken>. See also
+L</GenerateAuthString>.
 
 =cut
 

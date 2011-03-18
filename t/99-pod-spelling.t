@@ -104,6 +104,7 @@ subcomponents
 unary
 UTF-8
 reparenting
+RSS
 
 # RT JARGON
 ACEs
