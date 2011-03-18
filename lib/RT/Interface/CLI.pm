@@ -72,27 +72,27 @@ BEGIN {
 
 =head1 SYNOPSIS
 
-  use lib "/path/to/rt/libraries/";
+    use lib "/path/to/rt/libraries/";
 
-  use RT::Interface::CLI  qw(CleanEnv 
-	  		   GetCurrentUser GetMessageContent loc);
+    use RT::Interface::CLI qw(CleanEnv GetCurrentUser GetMessageContent loc);
 
-  #Clean out all the nasties from the environment
-  CleanEnv();
+    # Clean out all the nasties from the environment.
+    CleanEnv();
 
-  #let's talk to RT'
-  use RT;
+    # Load RT's code.
+    use RT;
 
-  #Load RT's config file
-  RT::LoadConfig();
+    # Load RT's config file.
+    RT::LoadConfig();
 
-  # Connect to the database. set up loggign
-  RT::Init();
+    # Connect to the database. Set up logging.
+    RT::Init();
 
-  #Get the current user all loaded
-  my $CurrentUser = GetCurrentUser();
+    # Get the current user all loaded
+    my $CurrentUser = GetCurrentUser();
 
-  print loc('Hello!'); # Synonym of $CuurentUser->loc('Hello!');
+    # Synonym of $CuurentUser->loc('Hello!');
+    print loc('Hello!');
 
 =head1 DESCRIPTION
 
@@ -105,7 +105,7 @@ BEGIN {
 
 =head2 CleanEnv
 
-Removes some of the nastiest nasties from the user\'s environment.
+Removes some of the nastiest attack vectors from the user's environment.
 
 =cut
 
@@ -127,8 +127,9 @@ sub CleanEnv {
 
 =head2 GetCurrentUser
 
-  Figures out the uid of the current user and returns an RT::CurrentUser object
-loaded with that user.  if the current user isn't found, returns a copy of RT::Nobody.
+Figures out the uid of the current user and returns an L<RT::CurrentUser>
+object loaded with that user. If the current user isn't found, returns a copy
+of C<< RT->Nobody >>.
 
 =cut
 
@@ -157,7 +158,7 @@ sub GetCurrentUser  {
 
 =head2 loc
 
-  Synonym of $CurrentUser->loc().
+    Synonym of C<< $CurrentUser->loc("...") >>.
 
 =cut
 
