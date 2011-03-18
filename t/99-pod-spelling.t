@@ -102,6 +102,7 @@ codebase
 add-ons
 subcomponents
 unary
+UTF-8
 
 # RT JARGON
 ACEs

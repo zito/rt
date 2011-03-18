@@ -161,7 +161,7 @@ sub LoadGlobalTemplate {
 Loads the Queue template named NAME for Queue QUEUE.
 
 Note that this method doesn't load a global template with the same name
-if template in the queue doesn't exist. THe following code can be used:
+if template in the queue doesn't exist. The following code can be used:
 
     $template->LoadQueueTemplate( Queue => $queue_id, Name => $template_name );
     unless ( $template->id ) {
@@ -489,7 +489,7 @@ sub _ParseContentSimple {
             $fi_text =~ s/^\s+//;
             $fi_text =~ s/\s+$//;
 
-            # if the codeblock is a simple $Variable lookup, use the value from
+            # if the code block is a simple $Variable lookup, use the value from
             # the TemplateArgs hash...
             if (my ($var) = $fi_text =~ /^\$(\w+)$/) {
                 if (exists $args{TemplateArgs}{$var}) {
@@ -497,7 +497,7 @@ sub _ParseContentSimple {
                 }
             }
 
-            # if there was no substitution then just reinsert the codeblock
+            # if there was no substitution then just reinsert the code block
             if (!defined $fi_res) {
                 $fi_res = "{$original_fi_text}";
             }
@@ -652,11 +652,11 @@ sub _UpdateAttributes {
 
 =head2 CompileCheck
 
-If the template's Type is Perl, then compile check all the codeblocks to see if
-they are syntactically valid. We eval them in a codeblock to avoid actually
+If the template's Type is Perl, then compile check all the code blocks to see if
+they are syntactically valid. We eval them in a code block to avoid actually
 executing the code.
 
-Returns an (ok, message) pair.
+Returns an (OK, message) pair.
 
 =cut
 
@@ -693,7 +693,7 @@ sub CompileCheck {
         # all the other extraneous garbage
         $error =~ s/\(eval \d+\) line (\d+).*/"template line " . ($1+$fi_lineno-1)/es;
 
-        return (0, $self->loc("Couldn't compile template codeblock '[_1]': [_2]", $fi_text, $error));
+        return (0, $self->loc("Couldn't compile template code block '[_1]': [_2]", $fi_text, $error));
     }
 
     return (1, $self->loc("Template compiles"));
