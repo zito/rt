@@ -616,7 +616,7 @@ sub _StringLimit {
 
 Handle fields limiting based on Transaction Date.
 
-The inpupt value must be in a format parseable by Time::ParseDate
+We use L<Time::ParseDate> to parse the input value into a format we can use.
 
 Meta Data:
   None
@@ -1121,34 +1121,35 @@ specific group or not.
 Meta Data:
   1: Field to query on
 
-SELECT DISTINCT main.*
-FROM
-    Tickets main,
-    Groups Groups_1,
-    CachedGroupMembers CachedGroupMembers_2,
-    Users Users_3
-WHERE (
-    (main.EffectiveId = main.id)
-) AND (
-    (main.Status != 'deleted')
-) AND (
-    (main.Type = 'ticket')
-) AND (
-    (
-	(Users_3.EmailAddress = '22')
-	    AND
-	(Groups_1.Domain = 'RT::Ticket-Role')
-	    AND
-	(Groups_1.Type = 'RequestorGroup')
-    )
-) AND
-    Groups_1.Instance = main.id
-AND
-    Groups_1.id = CachedGroupMembers_2.GroupId
-AND
-    CachedGroupMembers_2.MemberId = Users_3.id
-ORDER BY main.id ASC
-LIMIT 25
+
+    SELECT DISTINCT main.*
+    FROM
+        Tickets main,
+        Groups Groups_1,
+        CachedGroupMembers CachedGroupMembers_2,
+        Users Users_3
+    WHERE (
+        (main.EffectiveId = main.id)
+    ) AND (
+        (main.Status != 'deleted')
+    ) AND (
+        (main.Type = 'ticket')
+    ) AND (
+        (
+    	(Users_3.EmailAddress = '22')
+    	    AND
+    	(Groups_1.Domain = 'RT::Ticket-Role')
+    	    AND
+    	(Groups_1.Type = 'RequestorGroup')
+        )
+    ) AND
+        Groups_1.Instance = main.id
+    AND
+        Groups_1.id = CachedGroupMembers_2.GroupId
+    AND
+        CachedGroupMembers_2.MemberId = Users_3.id
+    ORDER BY main.id ASC
+    LIMIT 25
 
 =cut
 
@@ -1245,7 +1246,7 @@ sub _WatcherMembershipLimit {
 
 =head2 _CustomFieldDecipher
 
-Try and turn a CF descriptor into (cfid, cfname) object pair.
+Try to turn a CF descriptor into an (id, name) object pair.
 
 =cut
 
@@ -2711,11 +2712,11 @@ Takes a paramhash of key/value pairs with the following keys:
 
 =over 4
 
-=item CUSTOMFIELD - CustomField name or id.  If a name is passed, an additional parameter QUEUE may also be passed to distinguish the custom field.
+=item C<CUSTOMFIELD> - CustomField name or id.  If a name is passed, an additional parameter QUEUE may also be passed to distinguish the custom field.
 
-=item OPERATOR - The usual Limit operators
+=item C<OPERATOR> - The usual Limit operators
 
-=item VALUE - The value to compare against
+=item C<VALUE> - The value to compare against
 
 =back
 
@@ -3389,7 +3390,7 @@ sub _ProcessRestrictions {
 =head2 _BuildItemMap
 
 Build up a L</ItemMap> of first/last/next/prev items, so that we can
-display search nav quickly.
+display search navigation quickly.
 
 =cut
 
