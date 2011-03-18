@@ -116,7 +116,7 @@ sub FromObject {
 Returns a local object id for this content. You are expected to know
 what sort of object this is the Id of
 
-Returns true if everything is ok, otherwise false
+Returns true if everything is okay, otherwise false.
 
 =cut
 
@@ -216,7 +216,7 @@ sub URI {
 
 =head2 Object
 
-Returns a local object for this content. This will usually be an RT::Ticket or somesuch
+Returns a local object for this content. This will usually be an L<RT::Ticket>.
 
 =cut
 
@@ -232,7 +232,7 @@ sub Object {
 
 =head2 IsLocal
 
-Returns a local object for this content. This will usually be an RT::Ticket or somesuch
+Returns whether the object is governed by this instance of RT.
 
 =cut
 
@@ -256,7 +256,7 @@ sub AsHREF {
 
 =head2 Resolver
 
-Returns this URI's URI resolver object
+Returns this object's URI resolver object.
 
 =cut
 
