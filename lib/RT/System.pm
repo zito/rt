@@ -240,7 +240,7 @@ sub SubjectTag {
 
 Attribute to decide when SelectQueue needs to flush the list of queues
 and retrieve new ones.  Set when queues are created, enabled/disabled
-and on certain acl changes.  Should also better understand group management.
+and on certain ACL changes.  Should also better understand group management.
 
 If passed a true value, will update the attribute to be the current time.
 
