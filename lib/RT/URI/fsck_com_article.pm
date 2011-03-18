@@ -91,7 +91,7 @@ When handed an L<RT::Article> object, figure out its URI
 
 =head2 ParseURI URI
 
-When handed an fsck.com-article URI, figures out things like whether its a local article
+When handed an C<fsck.com-article> URI, figures out things like whether its a local article
 and what its ID is
 
 =cut
@@ -180,7 +180,7 @@ sub Scheme {
 
 =head2 HREF
 
-If this is a local article, return an HTTP url to it.
+If this is a local article, return an HTTP URL to it.
 Otherwise, return its URI
 
 =cut

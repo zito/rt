@@ -98,7 +98,7 @@ sub URIForObject {
 
 =head2 ParseURI URI
 
-When handed an fsck.com-rt: URI, figures out things like whether its a local record and what its ID is
+When handed an C<fsck.com-rt:> URI, figures out things like whether its a local record and what its ID is
 
 =cut
 
@@ -189,7 +189,7 @@ sub Scheme {
 
 =head2 HREF
 
-If this is a local ticket, return an HTTP url to it.
+If this is a local ticket, return an HTTP URL to it.
 Otherwise, return its URI
 
 =cut

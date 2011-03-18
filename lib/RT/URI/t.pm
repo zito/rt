@@ -78,11 +78,11 @@ use base 'RT::URI::fsck_com_rt';
 
 =head1 NAME
 
-RT::URI::t - aliad for RT::URI::fsck_com_rt that supports 't:12345' URIs
+RT::URI::t - alias for RT::URI::fsck_com_rt that supports 't:12345' URIs
 
 =head2 ParseURI URI
 
-When handed an t: URI, figures out if it is an RT ticket.  This is an
+When handed a C<t:> URI, figures out if it is an RT ticket.  This is an
 alternate short form of specifying a full ticket URI.
 
 =cut
