@@ -60,7 +60,7 @@ use RT::Record;
 
 =head2 new
 
-Creates new empty collection of dependecies.
+Creates new empty collection of dependencies.
 
 =cut
 

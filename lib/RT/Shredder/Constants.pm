@@ -60,8 +60,9 @@ RT::Shredder::Constants -  RT::Shredder constants that is used to mark state of 
 =head1 DESCRIPTION
 
 This module exports two group of bit constants.
-First group is group of flags which are used to clarify dependecies between objects, and
-second group is states of RT objects in Shredder cache.
+
+The first group is a group of flags which clarify dependencies between objects.
+The second group is states of RT objects in the Shredder cache.
 
 =head1 FLAGS
 
@@ -109,7 +110,7 @@ loaded and placed into cache.
 =head2 WIPED
 
 Objects with this state are not exist any more in DB, but perl
-object is still in memory. This state is used to be shure that
+object is still in memory. This state is used to ensure that the
 delete query is called once.
 
 =head2 VALID
