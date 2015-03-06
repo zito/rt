@@ -785,22 +785,36 @@ sub _EncodeLOB {
     #get the max attachment length from RT
     my $MaxSize = RT->Config->Get('MaxAttachmentSize');
 
-    #if the current attachment contains nulls and the
-    #database doesn't support embedded nulls
+    my $uBody;
 
-    if ( ( !$RT::Handle->BinarySafeBLOBs ) && ( $Body =~ /\x00/ ) ) {
+    # some databases can't handle arbitrary binary content
+    if ( !$RT::Handle->BinarySafeBLOBs ) {
 
-        # set a flag telling us to mimencode the attachment
-        $ContentEncoding = 'base64';
+	eval {
+	    # try to decode utf-8 and die if not well formed...
+	    $uBody = Encode::decode_utf8($Body,
+		Encode::LEAVE_SRC | Encode::FB_CROAK);
+	    # if the current attachment contains nulls die...
+	    die if index($uBody, chr(0)) >= 0;
+	};
+	if ( $@ ) {
+	    undef $uBody;
+	    if ( length(MIME::Base64::encode_base64($Body))
+		    < length(MIME::QuotedPrint::encode($Body)) ) {
+		# set a flag telling us to mimencode the attachment
+		$ContentEncoding = 'base64';
 
-        #cut the max attchment size by 25% (for mime-encoding overhead.
-        $RT::Logger->debug("Max size is $MaxSize");
-        $MaxSize = $MaxSize * 3 / 4;
-    # Some databases (postgres) can't handle non-utf8 data
-    } elsif (    !$RT::Handle->BinarySafeBLOBs
-              && $Body =~ /\P{ASCII}/
-              && !Encode::is_utf8( $Body, 1 ) ) {
-          $ContentEncoding = 'quoted-printable';
+		# cut the max attachment size by 25%
+		# (for mime-encoding overhead
+		# 8b -> 6b, 76 chars + newline, 2 bytes padding)
+		$RT::Logger->debug("Max size is $MaxSize");
+		$MaxSize = $MaxSize * 3 / 4 * 76 / 77 - 2;
+	    } else {
+		$ContentEncoding = 'quoted-printable';
+
+		# TODO some correction on the max attachment size?
+	    }
+	}
     }
 
     #if the attachment is larger than the maximum size
@@ -812,8 +826,25 @@ sub _EncodeLOB {
 
             $RT::Logger->info("$self: Truncated an attachment of size $size");
 
+	    my $valid_utf8 = 0;
+	    eval {
+		# try to decode utf-8 and die if not well formed...
+		$uBody = Encode::decode_utf8($Body,
+		    Encode::LEAVE_SRC | Encode::FB_CROAK);
+		# if the current attachment contains nulls die...
+		die if index($uBody, chr(0)) >= 0;
+		$valid_utf8 = 1;
+	    };
             # truncate the attachment to that length.
             $Body = substr( $Body, 0, $MaxSize );
+	    if ( $valid_utf8 ) {
+		# handle splitting in the middle of UTF8 encoding
+		$uBody = Encode::decode_utf8($Body, Encode::FB_DEFAULT);
+		$Body = Encode::encode_utf8($uBody);
+	    } else {
+		undef $uBody;
+	    }
+
             $note_args = {
                 Type           => 'AttachmentTruncate',
                 Data           => $Filename,
@@ -849,6 +880,8 @@ sub _EncodeLOB {
 
     } elsif ($ContentEncoding eq 'quoted-printable') {
         $Body = MIME::QuotedPrint::encode($Body);
+    } elsif ( defined $uBody ) {
+	$Body = $uBody;
     }
 
 
